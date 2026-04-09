@@ -213,48 +213,101 @@
     }
 
     function generatePrint() {
-        const cls = document.getElementById('printClass').value.toUpperCase();
-        if(!cls) return alert("Select Class!");
-        let printHTML = '';
-        MASTER.forEach((r, i) => {
-            if(i>0 && r[3] && r[3].toString().trim().toUpperCase() === cls) {
-                printHTML += `
-                <div class="marksheet-page">
-                    <div class="m-header">
-                        <h1 class="m-school-name">K.R.R. JUNIOR HIGH SCHOOL</h1>
-                        <p style="margin:5px">MANPUR BAHERI ( BAREILLY ) | SESSION: 2025-26</p>
-                        <div style="background:var(--red); color:#fff; display:inline-block; padding:5px 20px; border-radius:20px; font-weight:bold; margin-top:10px">PROGRESS REPORT</div>
-                    </div>
-                    <table class="m-info-table">
-                        <tr><td colspan="2">Student Name: <span class="m-underline">${r[0]}</span></td></tr>
-                        <tr><td>Father's Name: <span class="m-underline">${r[2]}</span></td><td>Roll No: <span class="m-underline">${r[4]}</span></td></tr>
-                        <tr><td>Mother's Name: <span class="m-underline">${r[1]}</span></td><td>Class: <span class="m-underline">${r[3]}</span></td></tr>
-                        <tr><td>DOB: <span class="m-underline">${r[5]}</span></td><td>PEN No: <span class="m-underline">${r[6]||"---"}</span></td></tr>
-                    </table>
-                    <table class="m-marks-table">
-                        <thead><tr><th>SUBJECT</th><th>FA 1+2</th><th>HALF YEARLY</th><th>FA 3+4</th><th>ANNUAL</th><th>TOTAL</th></tr></thead>
-                        <tbody>
-                            ${Object.keys(colMap).map(s => {
-                                const c = colMap[s];
-                                const t = (parseInt(r[c[0]])||0)+(parseInt(r[c[1]])||0)+(parseInt(r[c[2]])||0)+(parseInt(r[c[3]])||0);
-                                return `<tr><td style="text-align:left; padding-left:10px">${s.toUpperCase()}</td><td>${r[c[0]]}</td><td>${r[c[1]]}</td><td>${r[c[2]]}</td><td>${r[c[3]]}</td><td style="background:#f0f0f0">${t}</td></tr>`;
-                            }).join('')}
-                        </tbody>
-                    </table>
-                    <div style="margin-top:20px; font-weight:bold; color:green">Teacher's Remarks: Excellent Effort!</div>
-                    <div class="m-sig-row">
-                        <div class="m-sig-box">Guardian's Sign</div>
-                        <div class="m-sig-box">Class Teacher</div>
-                        <div class="m-sig-box">Principal Sign</div>
-                    </div>
-                </div>`;
-            }
-        });
-        const win = window.open('', '_blank');
-        win.document.write(`<html><head><style>${document.head.innerHTML}</style></head><body>${printHTML}</body></html>`);
-        win.document.close();
-        setTimeout(() => win.print(), 500);
-    }
+    const cls = document.getElementById('printClass').value.toUpperCase();
+    if(!cls) return alert("Select Class!");
+    let printHTML = '';
+
+    MASTER.forEach((r, i) => {
+        if(i > 0 && r[3] && r[3].toString().trim().toUpperCase() === cls) {
+            
+            // 1. Subjects Table Row Generation
+            let rowsHtml = '';
+            let grandTotal = 0;
+
+            Object.keys(colMap).forEach(s => {
+                const c = colMap[s];
+                // Agar subject Physical Education hai toh marks ki jagah Grade dikhayenge
+                if (s.toLowerCase() === "physical education" || s.toLowerCase() === "physical") {
+                    const avgMarks = (parseInt(r[c[0]])||0 + parseInt(r[c[1]])||0 + parseInt(r[c[2]])||0 + parseInt(r[c[3]])||0) / 4;
+                    const grade = calculateGrade(avgMarks);
+                    rowsHtml += `<tr><td style="text-align:left; padding-left:10px">PHYSICAL EDUCATION</td><td colspan="4">GRADE</td><td style="background:#f0f0f0">${grade}</td></tr>`;
+                } else {
+                    const t = (parseInt(r[c[0]])||0)+(parseInt(r[c[1]])||0)+(parseInt(r[c[2]])||0)+(parseInt(r[c[3]])||0);
+                    grandTotal += t;
+                    rowsHtml += `<tr>
+                        <td style="text-align:left; padding-left:10px">${s.toUpperCase()}</td>
+                        <td>${r[c[0]] || '-'}</td>
+                        <td>${r[c[1]] || '-'}</td>
+                        <td>${r[c[2]] || '-'}</td>
+                        <td>${r[c[3]] || '-'}</td>
+                        <td style="background:#f0f0f0">${t}</td>
+                    </tr>`;
+                }
+            });
+
+            // 2. Marksheet Design (As per your requirement)
+            printHTML += `
+            <div class="marksheet-page">
+                <div class="m-header">
+                    <h1 class="m-school-name">K.R.R. JUNIOR HIGH SCHOOL</h1>
+                    <p style="margin:5px">MANPUR BAHERI ( BAREILLY ) | SESSION: 2025-26</p>
+                    <div style="background:var(--red); color:#fff; display:inline-block; padding:5px 20px; border-radius:20px; font-weight:bold; margin-top:10px">PROGRESS REPORT</div>
+                </div>
+                
+                <table class="m-info-table">
+                    <tr><td colspan="2">Student Name: <span class="m-underline">${r[0]}</span></td></tr>
+                    <tr><td>Father's Name: <span class="m-underline">${r[2]}</span></td><td>Roll No: <span class="m-underline">${r[4]}</span></td></tr>
+                    <tr><td>Mother's Name: <span class="m-underline">${r[1]}</span></td><td>Class: <span class="m-underline">${r[3]}</span></td></tr>
+                    <tr><td>DOB: <span class="m-underline">${r[5]}</span></td><td>PEN No: <span class="m-underline">${r[6]||"---"}</span></td></tr>
+                </table>
+
+                <table class="m-marks-table">
+                    <thead>
+                        <tr>
+                            <th>SUBJECT</th>
+                            <th>FA 1+2</th>
+                            <th>HALF YEARLY</th>
+                            <th>FA 3+4</th>
+                            <th>ANNUAL</th>
+                            <th>TOTAL</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${rowsHtml}
+                        <tr style="background:#e3f2fd; font-size:16px;">
+                            <td colspan="5" style="text-align:right; padding-right:10px;">GRAND TOTAL</td>
+                            <td>${grandTotal}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div style="margin-top:20px; font-weight:bold; color:green">
+                    Result Status: ${grandTotal > 150 ? "PASSED" : "PROMOTED"}
+                </div>
+
+                <div class="m-sig-row">
+                    <div class="m-sig-box">Guardian's Sign</div>
+                    <div class="m-sig-box">Class Teacher</div>
+                    <div class="m-sig-box">Principal Sign</div>
+                </div>
+            </div>`;
+        }
+    });
+
+    const win = window.open('', '_blank');
+    win.document.write(`<html><head><style>${document.head.innerHTML}</style></head><body>${printHTML}</body></html>`);
+    win.document.close();
+    setTimeout(() => win.print(), 500);
+}
+
+// Grade calculate karne ke liye helper function
+function calculateGrade(marks) {
+    if (marks >= 80) return 'A+';
+    if (marks >= 60) return 'A';
+    if (marks >= 45) return 'B';
+    if (marks >= 33) return 'C';
+    return 'D';
+}
 </script>
 </body>
 </html>
