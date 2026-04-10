@@ -3,19 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KRR School Portal - Final Edition</title>
+    <title>KRR School Portal - Full System</title>
     <style>
-        :root { 
-            --red: #d32f2f; --gold: #b8860b; --blue: #1a237e; 
-            --sub-bg: #fdfcf0;
-        }
+        :root { --red: #d32f2f; --gold: #b8860b; --blue: #1a237e; }
+        
+        /* UI STYLES */
+        body { font-family: 'Times New Roman', serif; background: #f0f2f5; margin: 0; }
+        .nav-bar { background: var(--blue); padding: 15px; text-align: center; color: white; position: sticky; top:0; z-index:1000; }
+        .nav-btn { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 10px 20px; cursor: pointer; border-radius: 5px; margin: 5px; font-weight: bold; }
+        .nav-btn.active { background: var(--red); }
+        .container { max-width: 900px; margin: 20px auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .section { display: none; }
+        .section.active { display: block; }
+        .step-box { margin-bottom: 15px; padding: 15px; border-radius: 8px; border-left: 5px solid var(--blue); background: #f8f9fa; }
+        select, input { width: 100%; padding: 12px; margin-top: 5px; border-radius: 6px; border: 1px solid #ccc; font-size: 16px; box-sizing: border-box; }
+        .btn-action { background: #2e7d32; color: white; border: none; padding: 15px; width: 100%; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 15px; font-size: 16px; }
 
-        body { font-family: 'Times New Roman', serif; background: #f4f4f4; margin: 0; }
-        .no-print { padding: 20px; text-align: center; background: var(--blue); color: white; }
-        .nav-btn { padding: 10px 20px; margin: 5px; cursor: pointer; font-weight: bold; border-radius: 5px; border: none; }
-        .active { background: var(--red); color: white; }
-
-        /* --- PRINT MARKSHEET DESIGN --- */
+        /* --- MARKSHEET PRINT DESIGN --- */
         .marksheet-page {
             width: 210mm; height: 297mm; padding: 12mm 15mm; margin: 0 auto;
             background: #fffdf5 !important; position: relative; box-sizing: border-box;
@@ -25,95 +29,174 @@
             -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important;
         }
 
-        /* Watermark Opacity 0.70 */
         .marksheet-page::before {
             content: ""; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 450px; height: 450px; background: url('2a7ade29-d3df-49ea-8b1d-63b8da857420.jpg') no-repeat center;
+            width: 480px; height: 480px; background: url('2a7ade29-d3df-49ea-8b1d-63b8da857420.jpg') no-repeat center;
             background-size: contain; opacity: 0.70; z-index: 0;
         }
 
-        .m-content { position: relative; z-index: 2; height: 100%; display: flex; flex-direction: column; }
-        .m-header { text-align: center; border-bottom: 2px solid var(--gold); padding-bottom: 10px; }
-        .m-school-name { font-size: 34px; font-weight: 900; color: var(--red) !important; margin: 0; }
+        .m-header { text-align: center; border-bottom: 2px solid var(--gold); padding-bottom: 10px; position: relative; z-index: 2;}
+        .m-school-name { font-size: 36px; font-weight: 900; color: var(--red) !important; margin: 0; }
         
         .m-banner { 
-            background: var(--red) !important; color: white !important; font-size: 22px; font-weight: bold;
-            padding: 8px 50px; text-align: center; width: fit-content; margin: 15px auto; 
-            border-radius: 40px; border: 2px solid var(--gold);
+            background: var(--red) !important; color: white !important; font-size: 24px; font-weight: bold;
+            padding: 8px 60px; text-align: center; width: fit-content; margin: 15px auto; 
+            border-radius: 50px; border: 2px solid var(--gold); text-transform: uppercase;
         }
 
-        /* Info Table - Underline only for Name */
-        .m-info-table { width: 100%; margin: 10px 0; font-size: 19px; border-collapse: collapse; line-height: 1.8; }
-        .m-name-underline { border-bottom: 2px solid #000; font-weight: bold; color: var(--red); padding: 0 5px; }
-        .m-val { font-weight: bold; color: #000; padding: 0 5px; }
+        .m-info-table { width: 100%; margin: 15px 0; font-size: 19px; border-collapse: collapse; position: relative; z-index: 2;}
+        .m-name-underline { border-bottom: 2px solid #000; font-weight: bold; color: var(--red); padding: 0 8px; }
+        .m-val { font-weight: bold; padding: 0 8px; }
 
-        /* Colorful Table */
-        .m-marks-table { width: 100%; border-collapse: collapse; border: 2px solid #000; margin-top: 10px; }
-        .m-marks-table th { background: #333 !important; color: white !important; padding: 8px 2px; font-size: 13px; border: 1px solid #000; }
-        .m-marks-table td { border: 1px solid #000; padding: 7px 4px; text-align: center; font-weight: bold; font-size: 15px; background: #fff !important; }
-        
+        .m-marks-table { width: 100%; border-collapse: collapse; border: 2px solid #000; position: relative; z-index: 2;}
+        .m-marks-table th { background: #333 !important; color: white !important; padding: 8px; border: 1px solid #000; font-size: 13px; }
+        .m-marks-table td { border: 1px solid #000; padding: 8px 4px; text-align: center; font-weight: bold; font-size: 15px; background: #fff !important; }
+
         .sub-name { text-align: left !important; padding-left: 10px !important; color: var(--blue) !important; width: 160px; }
         .total-cell { background: #fff9c4 !important; color: #000 !important; border: 1.5px solid #000 !important; }
         .grade-cell { color: var(--red) !important; font-weight: 900 !important; }
 
-        /* Result Box - Round & Colorful */
         .m-result-box { 
-            margin-top: 20px; border: 2.5px solid var(--red); padding: 12px; 
+            margin-top: 15px; border: 2.5px solid var(--red); padding: 12px; 
             display: flex; justify-content: space-between; 
             background: #fff9e6 !important; border-radius: 40px; 
-            font-size: 18px; font-weight: bold; 
+            font-size: 18px; font-weight: bold; position: relative; z-index: 2;
         }
 
-        .m-sig-row { display: flex; justify-content: space-between; margin-top: auto; padding-bottom: 5px; }
-        .m-sig-box { border-top: 2px solid #000; width: 160px; text-align: center; font-weight: bold; padding-top: 5px; font-size: 14px; }
+        .m-sig-row { display: flex; justify-content: space-between; margin-top: auto; padding-bottom: 10px; position: relative; z-index: 2;}
+        .m-sig-box { border-top: 2px solid #000; width: 170px; text-align: center; font-weight: bold; padding-top: 5px; }
         
-        .floral-line { text-align: center; font-size: 24px; margin-top: 10px; letter-spacing: 5px; }
+        .floral-line { text-align: center; font-size: 26px; margin-top: 10px; letter-spacing: 5px; position: relative; z-index: 2;}
         .f-gold { color: var(--gold); } .f-red { color: var(--red); }
 
-        @media print { 
-            .no-print { display: none; } 
-            body { background: white; margin: 0; } 
-            .marksheet-page { border: 8px double var(--red) !important; margin: 0 !important; width: 100% !important; }
-        }
+        @media print { .no-print { display: none; } body { background: white; margin: 0; } }
     </style>
 </head>
 <body>
 
-<div class="no-print">
-    <h2>K.R.R. JUNIOR HIGH SCHOOL - ADMIN PANEL</h2>
-    <button class="nav-btn active">Print Management</button>
-    <div style="margin-top:20px;">
-        <select id="printClass" style="padding:10px; width:200px;">
-            <option value="I">Class I</option><option value="II">Class II</option><option value="III">Class III</option>
-            <option value="IV">Class IV</option><option value="V">Class V</option><option value="VI">Class VI</option>
-            <option value="VII">Class VII</option><option value="VIII">Class VIII</option>
-        </select>
-        <button class="nav-btn" style="background:white; color:black;" onclick="generatePrint()">Generate A4 Marksheets</button>
+<div class="nav-bar no-print">
+    <h2>K.R.R. JUNIOR HIGH SCHOOL PORTAL</h2>
+    <button class="nav-btn active" onclick="showTab('teacher')">TEACHER ENTRY</button>
+    <button class="nav-btn" onclick="showTab('admin')">ADMIN PANEL</button>
+</div>
+
+<div class="container no-print">
+    <div id="teacher" class="section active">
+        <h3>Teacher Marks Entry</h3>
+        <div class="step-box">
+            <label>1. Select Class</label>
+            <select id="tClass" onchange="filterStudents()">
+                <option value="">-- Choose --</option>
+                <option value="I">Class I</option><option value="II">Class II</option>
+                <option value="III">Class III</option><option value="IV">Class IV</option>
+                <option value="V">Class V</option><option value="VI">Class VI</option>
+                <option value="VII">Class VII</option><option value="VIII">Class VIII</option>
+            </select>
+        </div>
+        <div id="studentStep" class="step-box" style="display:none;">
+            <label>2. Select Student</label>
+            <select id="tStudent" onchange="document.getElementById('subjectStep').style.display='block';"></select>
+        </div>
+        <div id="subjectStep" class="step-box" style="display:none;">
+            <label>3. Select Subject</label>
+            <select id="tSubject" onchange="loadMarks()">
+                <option value="">-- Choose Subject --</option>
+                <option value="hindi">HINDI</option><option value="english">ENGLISH</option>
+                <option value="math">MATHEMATICS</option><option value="science">SCIENCE</option>
+                <option value="social">SOCIAL SCIENCE</option><option value="computer">COMPUTER/GK</option>
+                <option value="drawing">DRAWING</option><option value="physical">PHY. HEALTH EDU.</option>
+            </select>
+        </div>
+        <div id="marksArea" style="display:none;">
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; background:#fff; padding:15px; border-radius:8px; border:1px solid #ddd;">
+                <div>FA I+II: <input type="number" id="m1"></div>
+                <div>Half Yearly: <input type="number" id="m2"></div>
+                <div>FA III+IV: <input type="number" id="m3"></div>
+                <div>Annual: <input type="number" id="m4"></div>
+            </div>
+            <button class="btn-action" onclick="saveData()">Update Marks</button>
+        </div>
+    </div>
+
+    <div id="admin" class="section">
+        <h3>Admin Management</h3>
+        <div class="step-box">
+            <label>Upload CSV File</label>
+            <input type="file" id="csvFile" accept=".csv">
+            <button class="btn-action" style="background:var(--blue);" onclick="uploadCSV()">Sync Master Data</button>
+        </div>
+        <div class="step-box">
+            <label>Bulk Print Marksheets</label>
+            <select id="printClass">
+                <option value="I">Class I</option><option value="II">Class II</option><option value="III">Class III</option>
+                <option value="IV">Class IV</option><option value="V">Class V</option><option value="VI">Class VI</option>
+                <option value="VII">Class VII</option><option value="VIII">Class VIII</option>
+            </select>
+            <button class="btn-action" style="background:var(--red);" onclick="generatePrint()">Generate Marksheets</button>
+        </div>
     </div>
 </div>
 
 <script>
     const API = "https://script.google.com/macros/s/AKfycbwf6Ay8MZy0Qr3vkhFFDGR0a0azE5amQMVIh0BMTD2T3Uxoah5fxwUFQVfUQ7frr8a7ZQ/exec";
+    const ADMIN_PASS = "KRR@2026";
     let MASTER = [];
 
-    async function sync() {
-        const res = await fetch(API); MASTER = await res.json();
-    }
+    async function sync() { const res = await fetch(API); MASTER = await res.json(); }
     sync();
+
+    function showTab(id) {
+        if (id === 'admin') { if (prompt("Password:") !== ADMIN_PASS) return; }
+        document.querySelectorAll('.section, .nav-btn').forEach(el => el.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+    }
 
     const colMap = { 
         hindi:[11,12,13,14], english:[7,8,9,10], math:[15,16,17,18], science:[19,20,21,22], 
         social:[23,24,25,26], computer:[27,28,29,30], drawing:[31,32,33,34], physical:[35,36,37,38] 
     };
 
-    function getGrade(m) {
-        if (m >= 180) return 'A+'; if (m >= 150) return 'A';
-        if (m >= 120) return 'B'; if (m >= 90) return 'C'; if (m >= 66) return 'D'; return 'E';
+    function filterStudents() {
+        const cls = document.getElementById('tClass').value;
+        const sel = document.getElementById('tStudent');
+        sel.innerHTML = '<option value="">-- Select --</option>';
+        MASTER.forEach((r, i) => { if(i>0 && r[3] == cls) sel.add(new Option(r[0], i)); });
+        document.getElementById('studentStep').style.display='block';
+    }
+
+    function loadMarks() {
+        const sub = document.getElementById('tSubject').value;
+        const i = document.getElementById('tStudent').value;
+        const cols = colMap[sub];
+        document.getElementById('m1').value = MASTER[i][cols[0]] || 0;
+        document.getElementById('m2').value = MASTER[i][cols[1]] || 0;
+        document.getElementById('m3').value = MASTER[i][cols[2]] || 0;
+        document.getElementById('m4').value = MASTER[i][cols[3]] || 0;
+        document.getElementById('marksArea').style.display='block';
+    }
+
+    async function saveData() {
+        const i = document.getElementById('tStudent').value;
+        const sub = document.getElementById('tSubject').value;
+        const vals = [document.getElementById('m1').value, document.getElementById('m2').value, document.getElementById('m3').value, document.getElementById('m4').value];
+        await fetch(API, { method:"POST", body: JSON.stringify({action:"updateMarks", rowIndex: parseInt(i), colIndexes: colMap[sub], newValues: vals}) });
+        alert("Updated!"); sync();
+    }
+
+    function uploadCSV() {
+        const file = document.getElementById('csvFile').files[0];
+        const reader = new FileReader();
+        reader.onload = async (e) => {
+            const rows = e.target.result.split("\n").map(r => r.split(","));
+            await fetch(API, { method:"POST", body: JSON.stringify({action:"updateMaster", data: rows}) });
+            alert("Master Data Updated!"); sync();
+        };
+        reader.readAsText(file);
     }
 
     function formatDate(val) {
         if(!val) return "---";
-        let d = new Date(val.toString().split('T')[0]);
+        let d = new Date(val.toString().split('T')[0].replace(/[^\d\/-]/g, ''));
         if(isNaN(d)) return val;
         return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`;
     }
@@ -128,79 +211,54 @@
                     const c = colMap[s];
                     const t = (parseInt(r[c[0]])||0)+(parseInt(r[c[1]])||0)+(parseInt(r[c[2]])||0)+(parseInt(r[c[3]])||0);
                     let sName = s === 'social' ? 'SOCIAL SCIENCE' : s === 'physical' ? 'PHY. HEALTH EDU.' : s.toUpperCase();
-                    
-                    if(s === 'physical') {
-                        rows += `<tr><td class="sub-name">${sName}</td><td>-</td><td>-</td><td>-</td><td>-</td><td class="total-cell">-</td><td class="grade-cell">A</td></tr>`;
-                    } else {
-                        gt += t;
-                        rows += `<tr><td class="sub-name">${sName}</td><td>${r[c[0]]||0}</td><td>${r[c[1]]||0}</td><td>${r[c[2]]||0}</td><td>${r[c[3]]||0}</td><td class="total-cell">${t}</td><td class="grade-cell">${getGrade(t)}</td></tr>`;
-                    }
+                    if(s !== 'physical') gt += t;
+                    rows += `<tr><td class="sub-name">${sName}</td><td>${r[c[0]]||0}</td><td>${r[c[1]]||0}</td><td>${r[c[2]]||0}</td><td>${r[c[3]]||0}</td><td class="total-cell">${s==='physical'?'-':t}</td><td class="grade-cell">${s==='physical'?'A':(t>=180?'A+':t>=150?'A':t>=120?'B':t>=90?'C':t>=66?'D':'E')}</td></tr>`;
                 });
 
                 const perc = (gt / 14).toFixed(2);
-                const isPass = perc >= 33;
-                
-                // Dynamic Remarks Logic
-                let remarks = "";
-                if(perc >= 80) remarks = "Excellent Performance!";
-                else if(perc >= 60) remarks = "Very Good, Keep it up.";
-                else if(isPass) remarks = "Good, work hard for more.";
-                else remarks = "Needs Improvement.";
+                let rem = perc >= 80 ? "Excellent Performance!" : perc >= 60 ? "Very Good, Keep it up." : perc >= 33 ? "Good, work hard for more." : "Needs Improvement.";
 
                 html += `
                 <div class="marksheet-page">
-                    <div class="m-content">
-                        <div class="m-header">
-                            <div style="display:flex; align-items:center; justify-content:space-between;">
-                                <img src="2a7ade29-d3df-49ea-8b1d-63b8da857420.jpg" style="width:80px; border-radius:50%;">
-                                <div style="flex:1;">
-                                    <h1 class="m-school-name">K.R.R. JUNIOR HIGH SCHOOL</h1>
-                                    <p style="margin:4px; font-weight:bold;">MANPUR BAHERI, BAREILLY (U.P.)</p>
-                                    <p style="color:var(--blue); font-weight:bold; margin:0;">SESSION : 2025 - 2026</p>
-                                </div>
-                                <div style="width:80px;"></div>
+                    <div class="m-header">
+                        <div style="display:flex; align-items:center; justify-content:space-between;">
+                            <img src="2a7ade29-d3df-49ea-8b1d-63b8da857420.jpg" style="width:85px; border-radius:50%;">
+                            <div style="flex:1;">
+                                <h1 class="m-school-name">K.R.R. JUNIOR HIGH SCHOOL</h1>
+                                <p style="margin:5px; font-weight:bold;">MANPUR BAHERI, BAREILLY (U.P.)</p>
+                                <p style="color:var(--blue); font-weight:bold; margin:0;">SESSION : 2025 - 2026</p>
                             </div>
+                            <div style="width:85px;"></div>
                         </div>
-                        <div class="m-banner">PROGRESS REPORT</div>
-                        <table class="m-info-table">
-                            <tr>
-                                <td colspan="2">Student Name : <span class="m-name-underline">${r[0]}</span></td>
-                            </tr>
-                            <tr>
-                                <td width="65%">Mother Name : <span class="m-val">Mrs. ${r[1]}</span></td>
-                                <td>Roll No : <span class="m-val">${r[4]}</span></td>
-                            </tr>
-                            <tr>
-                                <td>Father Name : <span class="m-val">Mr. ${r[2]}</span></td>
-                                <td>Class : <span class="m-val">${r[3]}</span></td>
-                            </tr>
-                            <tr>
-                                <td>Date of Birth : <span class="m-val">${formatDate(r[5])}</span></td>
-                                <td>PEN No : <span class="m-val">${r[6]||"---"}</span></td>
-                            </tr>
-                        </table>
-                        <table class="m-marks-table">
-                            <thead>
-                                <tr><th rowspan="2">SUBJECTS</th><th>FA I+II</th><th>HALF YEARLY</th><th>FA III+IV</th><th>ANNUAL</th><th class="total-cell">TOTAL</th><th>GRADE</th></tr>
-                                <tr><th>30</th><th>70</th><th>30</th><th>70</th><th>200</th><th>-</th></tr>
-                            </thead>
-                            <tbody>${rows}</tbody>
-                        </table>
-                        <div class="m-result-box">
-                            <span style="color:${isPass?'green':'red'}">Result Status: ${isPass?'PASS':'FAIL'}</span>
-                            <span>Grand Total: ${gt}/1400</span>
-                            <span>Percentage: ${perc}%</span>
-                        </div>
-                        <div style="margin-top:15px; font-size:18px; font-weight:bold;">
-                            <span style="color:green">Teacher Remarks: ${remarks}</span><br><br>
-                            <span>Promotion: <span style="text-decoration:underline;">${isPass ? 'Promoted to next class' : 'Detained in same class'}</span></span>
-                        </div>
-                        <div class="m-sig-row">
-                            <div class="m-sig-box">Guardian Sign</div><div class="m-sig-box">Class Teacher</div><div class="m-sig-box">Principal</div>
-                        </div>
-                        <div class="floral-line">
-                            <span class="f-gold">❦</span> <span class="f-red">❀</span> <span class="f-gold">❦</span> <span class="f-red">❀</span> <span class="f-gold">❦</span> <span class="f-red">❀</span> <span class="f-gold">❦</span> <span class="f-red">❀</span> <span class="f-gold">❦</span>
-                        </div>
+                    </div>
+                    <div class="m-banner">PROGRESS REPORT</div>
+                    <table class="m-info-table">
+                        <tr><td colspan="2">Student Name : <span class="m-name-underline">${r[0]}</span></td></tr>
+                        <tr><td width="65%">Mother Name : <span class="m-val">Mrs. ${r[1]}</span></td><td>Roll No : <span class="m-val">${r[4]}</span></td></tr>
+                        <tr><td>Father Name : <span class="m-val">Mr. ${r[2]}</span></td><td>Class : <span class="m-val">${r[3]}</span></td></tr>
+                        <tr><td>Date of Birth : <span class="m-val">${formatDate(r[5])}</span></td><td>PEN No : <span class="m-val">${r[6]||"---"}</span></td></tr>
+                    </table>
+                    <table class="m-marks-table">
+                        <thead>
+                            <tr><th rowspan="2">SUBJECTS</th><th>FA I+II</th><th>HALF YEARLY</th><th>FA III+IV</th><th>ANNUAL</th><th class="total-cell">TOTAL</th><th>GRADE</th></tr>
+                            <tr><th>30</th><th>70</th><th>30</th><th>70</th><th>200</th><th>-</th></tr>
+                        </thead>
+                        <tbody>${rows}</tbody>
+                    </table>
+                    <div class="m-result-box">
+                        <span style="color:${perc>=33?'green':'red'}">Result: ${perc>=33?'PASS':'FAIL'}</span>
+                        <span>Total: ${gt}/1400</span>
+                        <span>Percentage: ${perc}%</span>
+                    </div>
+                    <div style="margin-top:20px; font-size:18px; font-weight:bold;">
+                        <span style="color:green">Teacher Remarks: ${rem}</span><br><br>
+                        <span>Promotion: <span style="text-decoration:underline;">${perc>=33?'Promoted to next class':'Detained in same class'}</span></span>
+                    </div>
+                    <div class="m-sig-row">
+                        <div class="m-sig-box">Guardian Sign</div><div class="m-sig-box">Class Teacher</div><div class="m-sig-box">Principal</div>
+                    </div>
+                    <div class="floral-line">
+                        <span class="f-gold">❦</span> <span class="f-red">❀</span> <span class="f-gold">❦</span> <span class="f-red">❀</span> <span class="f-gold">❦</span> <span class="f-red">❀</span> <span class="f-gold">❦</span> <span class="f-red">❀</span> <span class="f-gold">❦</span>
                     </div>
                 </div>`;
             }
