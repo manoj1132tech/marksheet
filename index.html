@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KRR Portal - Final Stable</title>
+    <title>KRR School Portal - Final Production</title>
     <style>
         :root { --red: #d32f2f; --gold: #b8860b; --blue: #1a237e; }
         
-        /* UI Styles */
         body { font-family: 'Times New Roman', serif; background: #f0f2f5; margin: 0; }
         .nav-bar { background: var(--blue); padding: 15px; text-align: center; color: white; position: sticky; top:0; z-index:1000; }
         .nav-btn { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 10px 20px; cursor: pointer; border-radius: 5px; margin: 5px; font-weight: bold; }
@@ -23,7 +22,6 @@
         .marksheet-page {
             width: 210mm; height: 297mm; padding: 10mm 15mm; margin: 0 auto;
             background: #fffdf5 !important; position: relative; box-sizing: border-box;
-            /* Yahan Border Fix Kiya Hai */
             border: 8px double #d32f2f !important;
             outline: 2px solid #b8860b !important; outline-offset: -12px;
             page-break-after: always; display: flex; flex-direction: column;
@@ -37,19 +35,20 @@
         }
 
         .m-header { text-align: center; border-bottom: 2px solid var(--gold); padding-bottom: 10px; position: relative; z-index: 2;}
-        .m-school-name { font-size: 36px; font-weight: 900; color: #d32f2f !important; margin: 0; }
+        .m-school-name { font-size: 34px; font-weight: 900; color: #d32f2f !important; margin: 0; }
         
         .m-banner { 
             background: #d32f2f !important; color: white !important; font-size: 24px; font-weight: bold;
-            padding: 10px 60px; text-align: center; width: fit-content; margin: 15px auto; 
+            padding: 8px 60px; text-align: center; width: fit-content; margin: 15px auto; 
             border-radius: 50px; border: 2px solid #b8860b; text-transform: uppercase;
         }
 
-        .m-info-table { width: 100%; margin: 15px 0; font-size: 18px; border-collapse: collapse; position: relative; z-index: 2;}
-        .m-underline { border-bottom: 1.5px solid #000; font-weight: bold; color: #d32f2f; padding: 0 8px; display: inline-block; min-width: 150px; }
+        .m-info-table { width: 100%; margin: 12px 0; font-size: 18px; border-collapse: collapse; position: relative; z-index: 2;}
+        .m-info-table td { padding: 4px 0; }
+        .m-underline { border-bottom: 1.5px solid #000; font-weight: bold; color: #d32f2f; padding: 0 5px; display: inline-block; }
 
         .m-marks-table { width: 100%; border-collapse: collapse; border: 2px solid #000; position: relative; z-index: 2;}
-        .m-marks-table th { background: #444 !important; color: white !important; padding: 8px; border: 1px solid #000; }
+        .m-marks-table th { background: #444 !important; color: white !important; padding: 8px; border: 1px solid #000; font-size: 13px; }
         .m-marks-table td { border: 1px solid #000; padding: 8px 4px; text-align: center; font-weight: bold; font-size: 15px; background: #fff !important; }
 
         .total-col { background: #fff176 !important; color: #000 !important; font-size: 16px; border: 1.5px solid black !important; }
@@ -58,25 +57,20 @@
             margin-top: 15px; border: 2.5px solid #d32f2f; padding: 12px; 
             display: flex; justify-content: space-between; 
             background: #fff9e6 !important; border-radius: 40px; 
-            font-size: 19px; font-weight: bold; position: relative; z-index: 2;
+            font-size: 18px; font-weight: bold; position: relative; z-index: 2;
         }
 
-        .m-footer-info { margin-top: 20px; font-size: 18px; font-weight: bold; position: relative; z-index: 2; }
+        .m-footer-info { margin-top: 15px; font-size: 18px; font-weight: bold; position: relative; z-index: 2; }
         .m-sig-row { display: flex; justify-content: space-between; margin-top: auto; padding-bottom: 10px; position: relative; z-index: 2;}
         .m-sig-box { border-top: 2px solid #000; width: 170px; text-align: center; font-weight: bold; padding-top: 5px; }
         
-        .floral-line { text-align: center; font-size: 26px; margin-top: 10px; letter-spacing: 5px; position: relative; z-index: 2;}
+        .floral-line { text-align: center; font-size: 24px; margin-top: 10px; letter-spacing: 5px; position: relative; z-index: 2;}
         .f-gold { color: #b8860b; } .f-red { color: #d32f2f; }
 
         @media print { 
             .no-print { display: none; } 
             body { background: white; margin: 0; } 
-            .marksheet-page { 
-                border: 8px double #d32f2f !important; 
-                outline: 2px solid #b8860b !important;
-                margin: 0 !important;
-                width: 100% !important;
-            } 
+            .marksheet-page { border: 8px double #d32f2f !important; outline: 2px solid #b8860b !important; margin: 0 !important; width: 100% !important; } 
         }
     </style>
 </head>
@@ -103,7 +97,7 @@
         </div>
         <div id="studentStep" class="step-box" style="display:none;">
             <label>2. Select Student</label>
-            <select id="tStudent" onchange="loadStudent()"></select>
+            <select id="tStudent" onchange="document.getElementById('subjectStep').style.display='block';"></select>
         </div>
         <div id="subjectStep" class="step-box" style="display:none;">
             <label>3. Select Subject</label>
@@ -150,15 +144,11 @@
     const ADMIN_PASS = "KRR@2026";
     let MASTER = [];
 
-    async function sync() {
-        const res = await fetch(API); MASTER = await res.json();
-    }
+    async function sync() { const res = await fetch(API); MASTER = await res.json(); }
     sync();
 
     function showTab(id) {
-        if (id === 'admin') { 
-            if (prompt("Password:") !== ADMIN_PASS) return;
-        }
+        if (id === 'admin') { if (prompt("Password:") !== ADMIN_PASS) return; }
         document.querySelectorAll('.section, .nav-btn').forEach(el => el.classList.remove('active'));
         document.getElementById(id).classList.add('active');
     }
@@ -175,8 +165,6 @@
         MASTER.forEach((r, i) => { if(i>0 && r[3] == cls) sel.add(new Option(r[0], i)); });
         document.getElementById('studentStep').style.display='block';
     }
-
-    function loadStudent() { document.getElementById('subjectStep').style.display='block'; }
 
     function loadMarks() {
         const sub = document.getElementById('tSubject').value;
@@ -208,20 +196,26 @@
         reader.readAsText(file);
     }
 
-    // DOB Format Logic (Fix)
+    // --- CLEAN DOB LOGIC (Fixes extra signs and alignment) ---
     function formatDOB(val) {
-        if(!val) return "---";
+        if(!val || val === "") return "---";
         try {
-            let d = new Date(val);
-            if(isNaN(d)) {
-                // Agar date string format mein hai "2015-05-20"
-                let p = val.toString().split('T')[0].split('-');
-                if(p.length === 3) return `${p[2]}/${p[1]}/${p[0]}`;
+            // Remove time or any extra characters after date
+            let cleanStr = val.toString().split('T')[0].replace(/[^\d\/-]/g, ''); 
+            let d = new Date(cleanStr);
+            
+            if(isNaN(d.getTime())) {
+                // Manual parse for YYYY-MM-DD or similar
+                let p = cleanStr.split(/[-/]/);
+                if(p.length === 3) {
+                    if(p[0].length === 4) return `${p[2]}/${p[1]}/${p[0]}`; // YYYY-MM-DD
+                    return `${p[0].padStart(2,'0')}/${p[1].padStart(2,'0')}/${p[2]}`; // DD-MM-YYYY
+                }
                 return val;
             }
-            let day = String(d.getDate()).padStart(2, '0');
-            let mon = String(d.getMonth() + 1).padStart(2, '0');
-            return `${day}/${mon}/${d.getFullYear()}`;
+            let dd = String(d.getDate()).padStart(2, '0');
+            let mm = String(d.getMonth() + 1).padStart(2, '0');
+            return `${dd}/${mm}/${d.getFullYear()}`;
         } catch(e) { return val; }
     }
 
@@ -241,15 +235,12 @@
                     const t = (parseInt(r[c[0]])||0)+(parseInt(r[c[1]])||0)+(parseInt(r[c[2]])||0)+(parseInt(r[c[3]])||0);
                     let sName = s === 'social' ? 'SOCIAL SCIENCE' : s === 'physical' ? 'PHY. HEALTH EDU.' : s.toUpperCase();
                     if(s === 'physical') {
-                        let g1 = getGrade((parseInt(r[c[1]])||0)*2.8);
-                        let g2 = getGrade((parseInt(r[c[3]])||0)*2.8);
-                        rows += `<tr><td>${sName}</td><td>-</td><td>${g1}</td><td>-</td><td>${g2}</td><td class="total-col">-</td><td>A</td></tr>`;
+                        rows += `<tr><td>${sName}</td><td>-</td><td>-</td><td>-</td><td>-</td><td class="total-col">-</td><td>A</td></tr>`;
                     } else {
                         gt += t;
                         rows += `<tr><td>${sName}</td><td>${r[c[0]]||0}</td><td>${r[c[1]]||0}</td><td>${r[c[2]]||0}</td><td>${r[c[3]]||0}</td><td class="total-col">${t}</td><td>${getGrade(t)}</td></tr>`;
                     }
                 });
-
                 const perc = (gt / 14).toFixed(2);
                 const isPass = perc >= 33;
 
@@ -257,20 +248,29 @@
                 <div class="marksheet-page">
                     <div class="m-header">
                         <div style="display:flex; align-items:center; justify-content:space-between;">
-                            <img src="2a7ade29-d3df-49ea-8b1d-63b8da857420.jpg" style="width:85px; border-radius:50%;">
+                            <img src="2a7ade29-d3df-49ea-8b1d-63b8da857420.jpg" style="width:80px; border-radius:50%;">
                             <div style="flex:1;">
                                 <h1 class="m-school-name">K.R.R. JUNIOR HIGH SCHOOL</h1>
-                                <p style="margin:5px; font-weight:bold;">MANPUR BAHERI, BAREILLY (U.P.)</p>
-                                <p style="color:var(--blue); font-weight:bold;">SESSION : 2025 - 2026</p>
+                                <p style="margin:3px; font-weight:bold;">MANPUR BAHERI, BAREILLY (U.P.)</p>
+                                <p style="color:var(--blue); font-weight:bold; margin:0;">SESSION : 2025 - 2026</p>
                             </div>
-                            <div style="width:85px;"></div>
+                            <div style="width:80px;"></div>
                         </div>
                     </div>
                     <div class="m-banner">PROGRESS REPORT</div>
                     <table class="m-info-table">
-                        <tr><td width="60%">Student Name : <span class="m-underline">${r[0]}</span></td><td>Roll No : <span class="m-underline">${r[4]}</span></td></tr>
-                        <tr><td>Father Name : <span class="m-underline">Mr. ${r[2]}</span></td><td>Class : <span class="m-underline">${r[3]}</span></td></tr>
-                        <tr><td>Mother Name : <span class="m-underline">Mrs. ${r[1]}</span></td><td>Date of Birth : <span class="m-underline">${formatDOB(r[5])}</span></td></tr>
+                        <tr>
+                            <td width="65%">Student Name : <span class="m-underline" style="min-width:250px">${r[0]}</span></td>
+                            <td>Roll No : <span class="m-underline" style="min-width:80px">${r[4]}</span></td>
+                        </tr>
+                        <tr>
+                            <td>Father Name : <span class="m-underline" style="min-width:250px">Mr. ${r[2]}</span></td>
+                            <td>Class : <span class="m-underline" style="min-width:80px">${r[3]}</span></td>
+                        </tr>
+                        <tr>
+                            <td>Mother Name : <span class="m-underline" style="min-width:250px">Mrs. ${r[1]}</span></td>
+                            <td>Date of Birth : <span class="m-underline" style="min-width:80px">${formatDOB(r[5])}</span></td>
+                        </tr>
                     </table>
                     <table class="m-marks-table">
                         <thead>
@@ -280,13 +280,13 @@
                         <tbody>${rows}</tbody>
                     </table>
                     <div class="m-result-box">
-                        <span style="color:${isPass?'green':'red'}">Result: ${isPass?'PASS':'FAIL'}</span>
-                        <span>Total: ${gt}/1400</span>
+                        <span style="color:${isPass?'green':'red'}">Result Status: ${isPass?'PASS':'FAIL'}</span>
+                        <span>Grand Total: ${gt}/1400</span>
                         <span>Percentage: ${perc}%</span>
                     </div>
                     <div class="m-footer-info">
-                        <span style="color:green">Remarks: ${perc > 75 ? 'Excellent Performance' : (isPass ? 'Good, Keep it up' : 'Hard work required')}</span><br><br>
-                        <span>Promotion: <span style="text-decoration:underline;">${isPass ? 'Promoted to next class' : 'Detained in same class'}</span></span>
+                        <span style="color:green">Remarks: ${perc > 75 ? 'Excellent' : (isPass ? 'Good' : 'Hard work required')}</span><br>
+                        <span>Promotion: <span style="text-decoration:underline;">${isPass ? 'Promoted to Class ' + (parseInt(cls)+1 || 'Next') : 'Detained in same class'}</span></span>
                     </div>
                     <div class="m-sig-row">
                         <div class="m-sig-box">Guardian Sign</div><div class="m-sig-box">Class Teacher</div><div class="m-sig-box">Principal</div>
