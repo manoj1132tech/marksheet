@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KRR School Portal - Fixed & Colorful</title>
+    <title>KRR School Portal - Final Colorful A4</title>
     <style>
         :root { 
             --red: #d32f2f; --gold: #b8860b; --blue: #1a237e; 
@@ -23,9 +23,9 @@
         select, input { width: 100%; padding: 12px; margin-top: 5px; border-radius: 6px; border: 1px solid #ccc; font-size: 16px; box-sizing: border-box; }
         .btn-action { background: #2e7d32; color: white; border: none; padding: 15px; width: 100%; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 15px; font-size: 16px; }
 
-        /* --- MARKSHEET DESIGN --- */
+        /* --- MARKSHEET DESIGN (A4 FIXED) --- */
         .marksheet-page {
-            width: 210mm; height: 297mm; padding: 10mm 15mm; margin: 0 auto;
+            width: 210mm; height: 297mm; padding: 12mm 15mm; margin: 0 auto;
             background: #fffdf5 !important; position: relative; box-sizing: border-box;
             border: 8px double var(--red) !important;
             outline: 2px solid var(--gold) !important; outline-offset: -12px;
@@ -34,13 +34,13 @@
         }
 
         .marksheet-page::before {
-            content: ""; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            content: ""; position: absolute; top: 52%; left: 50%; transform: translate(-50%, -50%);
             width: 480px; height: 480px; background: url('2a7ade29-d3df-49ea-8b1d-63b8da857420.jpg') no-repeat center;
             background-size: contain; opacity: 0.70; z-index: 0;
         }
 
         .m-header { text-align: center; border-bottom: 2px solid var(--gold); padding-bottom: 10px; position: relative; z-index: 2;}
-        .m-school-name { font-size: 38px; font-weight: 900; color: var(--red) !important; margin: 0; text-transform: uppercase; text-shadow: 1px 1px 1px #000; }
+        .m-school-name { font-size: 38px; font-weight: 900; color: var(--red) !important; margin: 0; text-transform: uppercase; text-shadow: 1px 1px 2px rgba(0,0,0,0.3); }
         
         .m-banner { 
             background: #673ab7 !important; color: white !important; font-size: 24px; font-weight: bold;
@@ -49,31 +49,33 @@
         }
 
         .m-info-table { width: 100%; margin: 15px 0; font-size: 19px; border-collapse: collapse; position: relative; z-index: 2;}
-        .m-name-underline { border-bottom: 2px solid #000; font-weight: bold; color: var(--red); padding: 0 8px; }
-        .m-val { font-weight: bold; padding: 0 8px; color: #333; }
+        .m-label { color: #555; font-weight: bold; }
+        .m-name-underline { border-bottom: 2.5px solid #000; font-weight: bold; color: var(--red); padding: 0 8px; font-size: 21px; }
+        .m-val { font-weight: bold; padding: 0 8px; color: var(--blue); }
 
-        .m-marks-table { width: 100%; border-collapse: collapse; border: 2px solid #000; position: relative; z-index: 2; background: rgba(255,255,255,0.8);}
-        .m-marks-table th { background: #333 !important; color: white !important; padding: 10px 2px; border: 1px solid #000; font-size: 13px; }
-        .m-marks-table td { border: 1px solid #000; padding: 8px 4px; text-align: center; font-weight: bold; font-size: 15px; }
+        .m-marks-table { width: 100%; border-collapse: collapse; border: 2px solid #000; position: relative; z-index: 2; background: rgba(255,255,255,0.7);}
+        .m-marks-table th { background: #333 !important; color: white !important; padding: 10px 2px; border: 1px solid #000; font-size: 14px; }
+        .m-marks-table td { border: 1px solid #000; padding: 8px 4px; text-align: center; font-weight: bold; font-size: 16px; }
 
         .sub-name { text-align: left !important; padding-left: 12px !important; color: var(--blue) !important; width: 180px; }
-        .total-cell { background: #fff176 !important; color: #000 !important; border: 1.5px solid #000 !important; font-size: 16px; }
-        .grade-cell { color: var(--red) !important; font-weight: 900 !important; font-size: 16px; }
+        .total-cell { background: #fff176 !important; color: #000 !important; border: 1.5px solid #000 !important; }
+        .grade-cell { color: var(--red) !important; font-weight: 900 !important; }
 
         .m-result-box { 
-            margin-top: 20px; border: 2.5px solid var(--red); padding: 15px; 
+            margin-top: 15px; border: 3px solid var(--red); padding: 15px; 
             display: flex; justify-content: space-between; 
-            background: #fff9e6 !important; border-radius: 40px; 
+            background: #fff9e6 !important; border-radius: 50px; 
             font-size: 20px; font-weight: bold; position: relative; z-index: 2;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
         }
 
         .m-sig-row { display: flex; justify-content: space-between; margin-top: auto; padding-bottom: 10px; position: relative; z-index: 2;}
-        .m-sig-box { border-top: 2px solid #000; width: 170px; text-align: center; font-weight: bold; padding-top: 5px; }
+        .m-sig-box { border-top: 2px solid #000; width: 170px; text-align: center; font-weight: bold; padding-top: 5px; font-size: 15px; }
         
-        .floral-line { text-align: center; font-size: 28px; margin-top: 10px; letter-spacing: 8px; position: relative; z-index: 2;}
+        .floral-line { text-align: center; font-size: 28px; margin-top: 12px; letter-spacing: 10px; position: relative; z-index: 2;}
         .f-gold { color: var(--gold); } .f-red { color: var(--red); }
 
-        @media print { .no-print { display: none; } body { background: white; margin: 0; } .marksheet-page { margin: 0; width: 100%; height: 100%; } }
+        @media print { .no-print { display: none; } body { background: white; margin: 0; } }
     </style>
 </head>
 <body>
@@ -86,13 +88,13 @@
 
 <div class="container no-print">
     <div id="teacher" class="section active">
-        <h3>Teacher Marks Entry</h3>
         <div class="step-box">
             <label>1. Select Class</label>
             <select id="tClass" onchange="filterStudents()">
-                <option value="">-- Choose --</option>
-                <option value="I">Class I</option><option value="II">Class II</option><option value="III">Class III</option>
-                <option value="IV">Class IV</option><option value="V">Class V</option><option value="VI">Class VI</option>
+                <option value="">-- Choose Class --</option>
+                <option value="I">Class I</option><option value="II">Class II</option>
+                <option value="III">Class III</option><option value="IV">Class IV</option>
+                <option value="V">Class V</option><option value="VI">Class VI</option>
                 <option value="VII">Class VII</option><option value="VIII">Class VIII</option>
             </select>
         </div>
@@ -104,15 +106,18 @@
             <label>3. Select Subject</label>
             <select id="tSubject" onchange="loadMarks()">
                 <option value="">-- Choose Subject --</option>
-                <option value="hindi">HINDI</option><option value="english">ENGLISH</option><option value="math">MATHEMATICS</option>
-                <option value="science">SCIENCE</option><option value="social">SOCIAL SCIENCE</option><option value="computer">COMPUTER/GK</option>
+                <option value="hindi">HINDI</option><option value="english">ENGLISH</option>
+                <option value="math">MATHEMATICS</option><option value="science">SCIENCE</option>
+                <option value="social">SOCIAL SCIENCE</option><option value="computer">COMPUTER/GK</option>
                 <option value="drawing">DRAWING</option><option value="physical">PHY. HEALTH EDU.</option>
             </select>
         </div>
         <div id="marksArea" style="display:none;">
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; background:#fff; padding:15px; border-radius:8px; border:1px solid #ddd;">
-                <div>FA I+II: <input type="number" id="m1"></div><div>Half Yearly: <input type="number" id="m2"></div>
-                <div>FA III+IV: <input type="number" id="m3"></div><div>Annual: <input type="number" id="m4"></div>
+                <div>FA I+II: <input type="number" id="m1"></div>
+                <div>Half Yearly: <input type="number" id="m2"></div>
+                <div>FA III+IV: <input type="number" id="m3"></div>
+                <div>Annual: <input type="number" id="m4"></div>
             </div>
             <button class="btn-action" onclick="saveData()">Update Marks</button>
         </div>
@@ -147,8 +152,7 @@
 
     function showTab(id) {
         if (id === 'admin') { if (prompt("Password:") !== ADMIN_PASS) return; }
-        document.querySelectorAll('.section').forEach(el => el.classList.remove('active'));
-        document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.section, .nav-btn').forEach(el => el.classList.remove('active'));
         document.getElementById(id).classList.add('active');
         document.getElementById(id === 'teacher' ? 'btn-t' : 'btn-a').classList.add('active');
     }
@@ -161,7 +165,7 @@
     function filterStudents() {
         const cls = document.getElementById('tClass').value;
         const sel = document.getElementById('tStudent');
-        sel.innerHTML = '<option value="">-- Select --</option>';
+        sel.innerHTML = '<option value="">-- Select Student --</option>';
         MASTER.forEach((r, i) => { if(i>0 && r[3] && r[3].toString().trim() == cls) sel.add(new Option(r[0], i)); });
         document.getElementById('studentStep').style.display='block';
     }
@@ -182,20 +186,8 @@
         const i = document.getElementById('tStudent').value;
         const sub = document.getElementById('tSubject').value;
         const vals = [document.getElementById('m1').value, document.getElementById('m2').value, document.getElementById('m3').value, document.getElementById('m4').value];
-        alert("Updating Database... Please wait.");
         await fetch(API, { method:"POST", body: JSON.stringify({action:"updateMarks", rowIndex: parseInt(i), colIndexes: colMap[sub], newValues: vals}) });
-        alert("Successfully Updated!"); sync();
-    }
-
-    function uploadCSV() {
-        const file = document.getElementById('csvFile').files[0];
-        const reader = new FileReader();
-        reader.onload = async (e) => {
-            const rows = e.target.result.split("\n").map(r => r.split(","));
-            await fetch(API, { method:"POST", body: JSON.stringify({action:"updateMaster", data: rows}) });
-            alert("Master Data Updated!"); sync();
-        };
-        reader.readAsText(file);
+        alert("Updated!"); sync();
     }
 
     function formatDate(val) {
@@ -221,13 +213,13 @@
                     let sName = s === 'social' ? 'SOCIAL SCIENCE' : s === 'physical' ? 'PHY. HEALTH EDU.' : s.toUpperCase();
                     let sColor = s === 'hindi' ? 'var(--sub-hindi)' : s === 'english' ? 'var(--sub-english)' : s === 'math' ? 'var(--sub-math)' : s === 'science' ? 'var(--sub-sci)' : s === 'drawing' ? 'var(--sub-drawing)' : s === 'computer' ? 'var(--sub-comp)' : 'var(--sub-social)';
                     if(s !== 'physical') gt += t;
-                    let grade = s==='physical'?'A':(t>=180?'A+':t>=150?'A':t>=120?'B':t>=90?'C':t>=66?'D':'E');
+                    let gr = s==='physical'?'A':(t>=180?'A+':t>=150?'A':t>=120?'B':t>=90?'C':t>=66?'D':'E');
 
                     rows += `<tr style="background-color:${sColor} !important;">
                         <td class="sub-name">${sName}</td>
                         <td>${r[c[0]]||0}</td><td>${r[c[1]]||0}</td><td>${r[c[2]]||0}</td><td>${r[c[3]]||0}</td>
                         <td class="total-cell">${s==='physical'?'-':t}</td>
-                        <td class="grade-cell">${grade}</td>
+                        <td class="grade-cell">${gr}</td>
                     </tr>`;
                 });
 
@@ -249,10 +241,10 @@
                     </div>
                     <div class="m-banner">PROGRESS REPORT</div>
                     <table class="m-info-table">
-                        <tr><td colspan="2">Student Name : <span class="m-name-underline">${r[0]}</span></td></tr>
-                        <tr><td width="65%">Mother Name : <span class="m-val">Mrs. ${r[1]}</span></td><td>Roll No : <span class="m-val">${r[4]}</span></td></tr>
-                        <tr><td>Father Name : <span class="m-val">Mr. ${r[2]}</span></td><td>Class : <span class="m-val">${r[3]}</span></td></tr>
-                        <tr><td>Date of Birth : <span class="m-val">${formatDate(r[5])}</span></td><td>PEN No : <span class="m-val">${r[6]||"---"}</span></td></tr>
+                        <tr><td colspan="2" class="m-label">Student Name : <span class="m-name-underline">${r[0]}</span></td></tr>
+                        <tr><td width="65%" class="m-label">Mother Name : <span class="m-val">Mrs. ${r[1]}</span></td><td class="m-label">Roll No : <span class="m-val">${r[4]}</span></td></tr>
+                        <tr><td class="m-label">Father Name : <span class="m-val">Mr. ${r[2]}</span></td><td class="m-label">Class : <span class="m-val">${r[3]}</span></td></tr>
+                        <tr><td class="m-label">Date of Birth : <span class="m-val">${formatDate(r[5])}</span></td><td class="m-label">PEN No : <span class="m-val">${r[6]||"---"}</span></td></tr>
                     </table>
                     <table class="m-marks-table">
                         <thead>
@@ -266,9 +258,9 @@
                         <span>Grand Total: ${gt}/1400</span>
                         <span>Percentage: ${perc}%</span>
                     </div>
-                    <div style="margin-top:20px; font-size:18px; font-weight:bold;">
+                    <div style="margin-top:15px; font-size:18px; font-weight:bold; position:relative; z-index:2;">
                         <span style="color:green">Teacher Remarks: ${remarks}</span><br><br>
-                        <span>Promotion: <span style="text-decoration:underline;">${perc>=33?'Promoted to next class':'Detained in same class'}</span></span>
+                        <span>Promotion: <span style="text-decoration:underline; color:var(--red);">${perc>=33?'Promoted to next class':'Detained in same class'}</span></span>
                     </div>
                     <div class="m-sig-row">
                         <div class="m-sig-box">Guardian Sign</div><div class="m-sig-box">Class Teacher</div><div class="m-sig-box">Principal</div>
