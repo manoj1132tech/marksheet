@@ -7,7 +7,6 @@
     <style>
         :root { --red: #d32f2f; --gold: #b8860b; --blue: #1a237e; }
         
-        /* UI Styles */
         body { font-family: 'Times New Roman', serif; background: #f0f2f5; margin: 0; }
         .nav-bar { background: var(--blue); padding: 15px; text-align: center; color: white; position: sticky; top:0; z-index:1000; }
         .nav-btn { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 10px 20px; cursor: pointer; border-radius: 5px; margin: 5px; font-weight: bold; }
@@ -19,11 +18,10 @@
         select, input { width: 100%; padding: 12px; margin-top: 5px; border-radius: 6px; border: 1px solid #ccc; font-size: 16px; box-sizing: border-box; }
         .btn-action { background: #2e7d32; color: white; border: none; padding: 15px; width: 100%; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 15px; font-size: 16px; }
 
-        /* --- MARKSHEET PRINT DESIGN --- */
+        /* --- MARKSHEET PRINT DESIGN (A4 FIXED) --- */
         .marksheet-page {
-            width: 210mm; height: 297mm; padding: 10mm 15mm; margin: 0 auto;
+            width: 210mm; height: 297mm; padding: 12mm 15mm; margin: 0 auto;
             background: #fffdf5 !important; position: relative; box-sizing: border-box;
-            /* Yahan Border Fix Kiya Hai */
             border: 8px double #d32f2f !important;
             outline: 2px solid #b8860b !important; outline-offset: -12px;
             page-break-after: always; display: flex; flex-direction: column;
@@ -31,28 +29,34 @@
         }
 
         .marksheet-page::before {
-            content: ""; position: absolute; top: 55%; left: 50%; transform: translate(-50%, -50%);
-            width: 450px; height: 450px; background: url('2a7ade29-d3df-49ea-8b1d-63b8da857420.jpg') no-repeat center;
-            background-size: contain; opacity: 0.1; z-index: 0;
+            content: ""; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 500px; height: 500px; background: url('2a7ade29-d3df-49ea-8b1d-63b8da857420.jpg') no-repeat center;
+            background-size: contain; opacity: 0.60; z-index: 0;
         }
 
         .m-header { text-align: center; border-bottom: 2px solid var(--gold); padding-bottom: 10px; position: relative; z-index: 2;}
-        .m-school-name { font-size: 36px; font-weight: 900; color: #d32f2f !important; margin: 0; }
+        .m-school-name { font-size: 38px; font-weight: 900; color: #d32f2f !important; margin: 0; }
         
         .m-banner { 
             background: #d32f2f !important; color: white !important; font-size: 24px; font-weight: bold;
-            padding: 10px 60px; text-align: center; width: fit-content; margin: 15px auto; 
+            padding: 8px 50px; text-align: center; width: fit-content; margin: 12px auto; 
             border-radius: 50px; border: 2px solid #b8860b; text-transform: uppercase;
         }
 
-        .m-info-table { width: 100%; margin: 15px 0; font-size: 18px; border-collapse: collapse; position: relative; z-index: 2;}
-        .m-underline { border-bottom: 1.5px solid #000; font-weight: bold; color: #d32f2f; padding: 0 8px; display: inline-block; min-width: 150px; }
+        .m-info-table { width: 100%; margin: 10px 0; font-size: 19px; border-collapse: collapse; position: relative; z-index: 2;}
+        .m-info-table td { padding: 5px 0; }
+        /* No underline as requested */
+        .m-val { font-weight: bold; color: #000; padding: 0 5px; }
+        .m-label-red { font-weight: bold; color: #d32f2f; }
 
-        .m-marks-table { width: 100%; border-collapse: collapse; border: 2px solid #000; position: relative; z-index: 2;}
+        .m-marks-table { width: 100%; border-collapse: collapse; border: 2px solid #000; position: relative; z-index: 2; background: rgba(255,255,255,0.8) !important;}
         .m-marks-table th { background: #444 !important; color: white !important; padding: 8px; border: 1px solid #000; }
-        .m-marks-table td { border: 1px solid #000; padding: 8px 4px; text-align: center; font-weight: bold; font-size: 15px; background: #fff !important; }
+        .m-marks-table td { border: 1px solid #000; padding: 8px 4px; text-align: center; font-weight: bold; font-size: 15px; }
 
-        .total-col { background: #fff176 !important; color: #000 !important; font-size: 16px; border: 1.5px solid black !important; }
+        /* Colorful Cells */
+        .subject-name { text-align: left !important; padding-left: 15px !important; color: #1a237e !important; background: #e3f2fd !important; }
+        .total-col { background: #fff176 !important; color: #b71c1c !important; font-size: 16px; border: 1.5px solid black !important; }
+        .grade-col { color: #2e7d32 !important; background: #f1f8e9 !important; }
 
         .m-result-box { 
             margin-top: 15px; border: 2.5px solid #d32f2f; padding: 12px; 
@@ -69,14 +73,9 @@
         .f-gold { color: #b8860b; } .f-red { color: #d32f2f; }
 
         @media print { 
-            .no-print { display: none; } 
-            body { background: white; margin: 0; } 
-            .marksheet-page { 
-                border: 8px double #d32f2f !important; 
-                outline: 2px solid #b8860b !important;
-                margin: 0 !important;
-                width: 100% !important;
-            } 
+            .no-print { display: none !important; } 
+            body { background: white; margin: 0; padding: 0; } 
+            .marksheet-page { margin: 0 !important; width: 210mm !important; height: 297mm !important; } 
         }
     </style>
 </head>
@@ -208,15 +207,17 @@
         reader.readAsText(file);
     }
 
-    // DOB Format Logic (Fix)
+    // Fixed DD/MM/YYYY DOB Logic
     function formatDOB(val) {
         if(!val) return "---";
         try {
             let d = new Date(val);
             if(isNaN(d)) {
-                // Agar date string format mein hai "2015-05-20"
-                let p = val.toString().split('T')[0].split('-');
-                if(p.length === 3) return `${p[2]}/${p[1]}/${p[0]}`;
+                let p = val.toString().split('T')[0].split(/[-/]/);
+                if(p.length === 3) {
+                    if(p[0].length === 4) return `${p[2]}/${p[1]}/${p[0]}`; // yyyy-mm-dd
+                    return `${p[0]}/${p[1]}/${p[2]}`; // dd-mm-yyyy
+                }
                 return val;
             }
             let day = String(d.getDate()).padStart(2, '0');
@@ -243,10 +244,10 @@
                     if(s === 'physical') {
                         let g1 = getGrade((parseInt(r[c[1]])||0)*2.8);
                         let g2 = getGrade((parseInt(r[c[3]])||0)*2.8);
-                        rows += `<tr><td>${sName}</td><td>-</td><td>${g1}</td><td>-</td><td>${g2}</td><td class="total-col">-</td><td>A</td></tr>`;
+                        rows += `<tr><td class="subject-name">${sName}</td><td>-</td><td>${g1}</td><td>-</td><td>${g2}</td><td class="total-col">-</td><td class="grade-col">A</td></tr>`;
                     } else {
                         gt += t;
-                        rows += `<tr><td>${sName}</td><td>${r[c[0]]||0}</td><td>${r[c[1]]||0}</td><td>${r[c[2]]||0}</td><td>${r[c[3]]||0}</td><td class="total-col">${t}</td><td>${getGrade(t)}</td></tr>`;
+                        rows += `<tr><td class="subject-name">${sName}</td><td>${r[c[0]]||0}</td><td>${r[c[1]]||0}</td><td>${r[c[2]]||0}</td><td>${r[c[3]]||0}</td><td class="total-col">${t}</td><td class="grade-col">${getGrade(t)}</td></tr>`;
                     }
                 });
 
@@ -257,20 +258,20 @@
                 <div class="marksheet-page">
                     <div class="m-header">
                         <div style="display:flex; align-items:center; justify-content:space-between;">
-                            <img src="2a7ade29-d3df-49ea-8b1d-63b8da857420.jpg" style="width:85px; border-radius:50%;">
+                            <img src="2a7ade29-d3df-49ea-8b1d-63b8da857420.jpg" style="width:90px; border-radius:50%;">
                             <div style="flex:1;">
                                 <h1 class="m-school-name">K.R.R. JUNIOR HIGH SCHOOL</h1>
-                                <p style="margin:5px; font-weight:bold;">MANPUR BAHERI, BAREILLY (U.P.)</p>
-                                <p style="color:var(--blue); font-weight:bold;">SESSION : 2025 - 2026</p>
+                                <p style="margin:5px; font-weight:bold; font-size:18px;">MANPUR BAHERI, BAREILLY (U.P.)</p>
+                                <p style="color:var(--blue); font-weight:bold; font-size:18px;">SESSION : 2025 - 2026</p>
                             </div>
-                            <div style="width:85px;"></div>
+                            <div style="width:90px;"></div>
                         </div>
                     </div>
                     <div class="m-banner">PROGRESS REPORT</div>
                     <table class="m-info-table">
-                        <tr><td width="60%">Student Name : <span class="m-underline">${r[0]}</span></td><td>Roll No : <span class="m-underline">${r[4]}</span></td></tr>
-                        <tr><td>Father Name : <span class="m-underline">Mr. ${r[2]}</span></td><td>Class : <span class="m-underline">${r[3]}</span></td></tr>
-                        <tr><td>Mother Name : <span class="m-underline">Mrs. ${r[1]}</span></td><td>${formatDOB(r[5])}</span></td></tr>
+                        <tr><td width="60%"><span class="m-label-red">Student Name :</span> <span class="m-val">${r[0]}</span></td><td><span class="m-label-red">Roll No :</span> <span class="m-val">${r[4]}</span></td></tr>
+                        <tr><td><span class="m-label-red">Father Name :</span> <span class="m-val">Mr. ${r[2]}</span></td><td><span class="m-label-red">Class :</span> <span class="m-val">${r[3]}</span></td></tr>
+                        <tr><td><span class="m-label-red">Mother Name :</span> <span class="m-val">Mrs. ${r[1]}</span></td><td><span class="m-label-red">Date of Birth :</span> <span class="m-val">${formatDOB(r[5])}</span></td></tr>
                     </table>
                     <table class="m-marks-table">
                         <thead>
@@ -286,7 +287,7 @@
                     </div>
                     <div class="m-footer-info">
                         <span style="color:green">Remarks: ${perc > 75 ? 'Excellent Performance' : (isPass ? 'Good, Keep it up' : 'Hard work required')}</span><br><br>
-                        <span>Promotion: <span style="text-decoration:underline;">${isPass ? 'Promoted to next class' : 'Detained in same class'}</span></span>
+                        <span>Promotion: ${isPass ? 'Promoted to next class' : 'Detained in same class'}</span>
                     </div>
                     <div class="m-sig-row">
                         <div class="m-sig-box">Guardian Sign</div><div class="m-sig-box">Class Teacher</div><div class="m-sig-box">Principal</div>
