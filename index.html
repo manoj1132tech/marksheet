@@ -18,7 +18,7 @@
         select, input { width: 100%; padding: 12px; margin-top: 5px; border-radius: 6px; border: 1px solid #ccc; font-size: 16px; box-sizing: border-box; }
         .btn-action { background: #2e7d32; color: white; border: none; padding: 15px; width: 100%; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 15px; font-size: 16px; }
 
-        /* --- MARKSHEET PRINT DESIGN (A4 FIXED) --- */
+        /* --- MARKSHEET PRINT DESIGN --- */
         .marksheet-page {
             width: 210mm; height: 297mm; padding: 12mm 15mm; margin: 0 auto;
             background: #fffdf5 !important; position: relative; box-sizing: border-box;
@@ -30,9 +30,8 @@
 
         .marksheet-page::before {
             content: ""; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            /* Watermark Height Reduced from 500px to 420px */
-            width: 420px; height: 420px; background: url('2a7ade29-d3df-49ea-8b1d-63b8da857420.jpg') no-repeat center;
-            background-size: contain; opacity: 0.60; z-index: 0;
+            width: 350px; height: 350px; background: url('2a7ade29-d3df-49ea-8b1d-63b8da857420.jpg') no-repeat center;
+            background-size: contain; opacity: 0.70; z-index: 0;
         }
 
         .m-header { text-align: center; border-bottom: 2px solid var(--gold); padding-bottom: 10px; position: relative; z-index: 2;}
@@ -45,7 +44,6 @@
         }
 
         .m-info-table { width: 100%; margin: 10px 0; font-size: 19px; border-collapse: collapse; position: relative; z-index: 2;}
-        .m-info-table td { padding: 5px 0; }
         .m-val { font-weight: bold; color: #000; padding: 0 5px; }
         .m-label-red { font-weight: bold; color: #d32f2f; }
 
@@ -54,7 +52,7 @@
         .m-marks-table td { border: 1px solid #000; padding: 8px 4px; text-align: center; font-weight: bold; font-size: 15px; }
 
         .subject-name { text-align: left !important; padding-left: 15px !important; color: #1a237e !important; background: #e3f2fd !important; }
-        .total-col { background: #fff176 !important; color: #b71c1c !important; font-size: 16px; border: 1.5px solid black !important; }
+        .total-col { background: #fff176 !important; color: #b71c1c !important; border: 1.5px solid black !important; }
         .grade-col { color: #2e7d32 !important; background: #f1f8e9 !important; }
 
         .m-result-box { 
@@ -64,16 +62,12 @@
             font-size: 19px; font-weight: bold; position: relative; z-index: 2;
         }
 
-        .m-footer-info { margin-top: 20px; font-size: 18px; font-weight: bold; position: relative; z-index: 2; }
         .m-sig-row { display: flex; justify-content: space-between; margin-top: auto; padding-bottom: 10px; position: relative; z-index: 2;}
         .m-sig-box { border-top: 2px solid #000; width: 170px; text-align: center; font-weight: bold; padding-top: 5px; }
-        
-        .floral-line { text-align: center; font-size: 26px; margin-top: 10px; letter-spacing: 5px; position: relative; z-index: 2;}
-        .f-gold { color: #b8860b; } .f-red { color: #d32f2f; }
 
         @media print { 
             .no-print { display: none !important; } 
-            body { background: white; margin: 0; padding: 0; } 
+            body { background: white; margin: 0; } 
             .marksheet-page { margin: 0 !important; width: 210mm !important; height: 297mm !important; } 
         }
     </style>
@@ -102,6 +96,7 @@
         <div id="studentStep" class="step-box" style="display:none;">
             <label>2. Select Student</label>
             <select id="tStudent" onchange="loadStudent()"></select>
+            <div id="studentInfoBox" style="margin-top:10px; font-size:14px; color:#555; display:none;"></div>
         </div>
         <div id="subjectStep" class="step-box" style="display:none;">
             <label>3. Select Subject</label>
@@ -115,10 +110,10 @@
         </div>
         <div id="marksArea" style="display:none;">
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; background:#fff; padding:15px; border-radius:8px; border:1px solid #ddd;">
-                <div>FA I+II: <input type="number" id="m1"></div>
-                <div>Half Yearly: <input type="number" id="m2"></div>
-                <div>FA III+IV: <input type="number" id="m3"></div>
-                <div>Annual: <input type="number" id="m4"></div>
+                <div>FA I+II (30): <input type="number" id="m1"></div>
+                <div>Half Yearly (70): <input type="number" id="m2"></div>
+                <div>FA III+IV (30): <input type="number" id="m3"></div>
+                <div>Annual (70): <input type="number" id="m4"></div>
             </div>
             <button class="btn-action" onclick="saveData()">Update Marks</button>
         </div>
@@ -169,16 +164,25 @@
     function filterStudents() {
         const cls = document.getElementById('tClass').value;
         const sel = document.getElementById('tStudent');
-        sel.innerHTML = '<option value="">-- Select --</option>';
+        sel.innerHTML = '<option value="">-- Choose Student --</option>';
         MASTER.forEach((r, i) => { if(i>0 && r[3] == cls) sel.add(new Option(r[0], i)); });
         document.getElementById('studentStep').style.display='block';
+        document.getElementById('studentInfoBox').style.display='none';
     }
 
-    function loadStudent() { document.getElementById('subjectStep').style.display='block'; }
+    function loadStudent() {
+        const i = document.getElementById('tStudent').value;
+        if(!i) return;
+        const s = MASTER[i];
+        document.getElementById('studentInfoBox').innerHTML = `<b>Roll:</b> ${s[4]} | <b>Father:</b> Mr. ${s[2]}`;
+        document.getElementById('studentInfoBox').style.display='block';
+        document.getElementById('subjectStep').style.display='block';
+    }
 
     function loadMarks() {
         const sub = document.getElementById('tSubject').value;
         const i = document.getElementById('tStudent').value;
+        if(!sub || !i) return;
         const cols = colMap[sub];
         document.getElementById('m1').value = MASTER[i][cols[0]] || 0;
         document.getElementById('m2').value = MASTER[i][cols[1]] || 0;
@@ -192,7 +196,7 @@
         const sub = document.getElementById('tSubject').value;
         const vals = [document.getElementById('m1').value, document.getElementById('m2').value, document.getElementById('m3').value, document.getElementById('m4').value];
         await fetch(API, { method:"POST", body: JSON.stringify({action:"updateMarks", rowIndex: parseInt(i), colIndexes: colMap[sub], newValues: vals}) });
-        alert("Updated!"); sync();
+        alert("Updated Successfully!"); sync();
     }
 
     function uploadCSV() {
@@ -213,8 +217,8 @@
             if(isNaN(d)) {
                 let p = val.toString().split('T')[0].split(/[-/]/);
                 if(p.length === 3) {
-                    if(p[0].length === 4) return `${p[2]}/${p[1]}/${p[0]}`; // yyyy-mm-dd
-                    return `${p[0]}/${p[1]}/${p[2]}`; // dd-mm-yyyy
+                    if(p[0].length === 4) return `${p[2]}/${p[1]}/${p[0]}`; 
+                    return `${p[0]}/${p[1]}/${p[2]}`;
                 }
                 return val;
             }
@@ -267,9 +271,10 @@
                     </div>
                     <div class="m-banner">PROGRESS REPORT</div>
                     <table class="m-info-table">
-                        <tr><td width="60%"><span class="m-label-red">Student Name :</span> <span class="m-val">${r[0]}</span></td><td><span class="m-label-red">Roll No :</span> <span class="m-val">${r[4]}</span></td></tr>
-                        <tr><td><span class="m-label-red">Father Name :</span> <span class="m-val">Mr. ${r[2]}</span></td><td><span class="m-label-red">Class :</span> <span class="m-val">${r[3]}</span></td></tr>
-                        <tr><td><span class="m-label-red">Mother Name :</span> <span class="m-val">Mrs. ${r[1]}</span></td><td><span class="m-label-red">Date of Birth :</span> <span class="m-val">${formatDOB(r[5])}</span></td></tr>
+                        <tr><td width="60%"><span class="m-label-red">Student Name :</span> <span class="m-val">${r[0]}</span></td><td><span class="m-label-red">PEN NO :</span> <span class="m-val">${r[6] || '---'}</span></td></tr>
+                        <tr><td><span class="m-label-red">Father Name :</span> <span class="m-val">Mr. ${r[2]}</span></td><td><span class="m-label-red">Roll No :</span> <span class="m-val">${r[4]}</span></td></tr>
+                        <tr><td><span class="m-label-red">Mother Name :</span> <span class="m-val">Mrs. ${r[1]}</span></td><td><span class="m-label-red">Class :</span> <span class="m-val">${r[3]}</span></td></tr>
+                        <tr><td><span class="m-label-red">Date of Birth :</span> <span class="m-val">${formatDOB(r[5])}</span></td><td></td></tr>
                     </table>
                     <table class="m-marks-table">
                         <thead>
@@ -283,15 +288,15 @@
                         <span>Total: ${gt}/1400</span>
                         <span>Percentage: ${perc}%</span>
                     </div>
-                    <div class="m-footer-info">
-                        <span style="color:green">Remarks: ${perc > 75 ? 'Excellent Performance' : (isPass ? 'Good, Keep it up' : 'Hard work required')}</span><br><br>
+                    <div style="margin-top:20px; font-weight:bold; font-size:18px;">
+                        <span>Remarks: <span style="color:green;">${perc > 75 ? 'Excellent Performance' : (isPass ? 'Good, Keep it up' : 'Hard work required')}</span></span><br><br>
                         <span>Promotion: ${isPass ? 'Promoted to next class' : 'Detained in same class'}</span>
                     </div>
                     <div class="m-sig-row">
                         <div class="m-sig-box">Guardian Sign</div><div class="m-sig-box">Class Teacher</div><div class="m-sig-box">Principal</div>
                     </div>
-                    <div class="floral-line">
-                        <span class="f-gold">❦</span> <span class="f-red">❀</span> <span class="f-gold">❦</span> <span class="f-red">❀</span> <span class="f-gold">❦</span> <span class="f-red">❀</span> <span class="f-gold">❦</span> <span class="f-red">❀</span> <span class="f-gold">❦</span>
+                    <div style="text-align:center; font-size:26px; margin-top:10px; letter-spacing:5px;">
+                        <span style="color:#b8860b;">❦</span> <span style="color:#d32f2f;">❀</span> <span style="color:#b8860b;">❦</span> <span style="color:#d32f2f;">❀</span> <span style="color:#b8860b;">❦</span>
                     </div>
                 </div>`;
             }
