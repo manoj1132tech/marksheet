@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KRR School Portal - Secured & Updated</title>
+    <title>KRR School Portal - Final Design</title>
     <style>
         :root { 
             --red: #d32f2f; --gold: #b8860b; --blue: #1a237e; 
-            --banner-bg: #673ab7; --border-clr: #d32f2f;
+            --banner-bg: #d32f2f;
         }
 
-        /* --- UI STYLES (Teacher/Admin Interface) --- */
+        /* --- UI STYLES --- */
         body { font-family: 'Times New Roman', serif; background: #f0f2f5; margin: 0; }
         .nav-bar { background: var(--blue); padding: 15px; text-align: center; color: white; position: sticky; top:0; z-index:1000; }
         .nav-btn { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 10px 20px; cursor: pointer; border-radius: 5px; margin: 5px; font-weight: bold; }
@@ -22,15 +22,13 @@
         select, input { width: 100%; padding: 12px; margin-top: 5px; border-radius: 6px; border: 1px solid #ccc; font-size: 16px; box-sizing: border-box; }
         .btn-action { background: #2e7d32; color: white; border: none; padding: 15px; width: 100%; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 15px; font-size: 16px; }
 
-        /* Student Detail Box in Teacher Entry */
         #detBox { background: #e3f2fd; padding: 15px; border-radius: 8px; margin: 15px 0; border: 1px solid #90caf9; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         #detBox b { color: var(--red); }
 
-        /* --- PRINT MARKSHEET DESIGN (A4 Perfected) --- */
+        /* --- PRINT MARKSHEET DESIGN --- */
         .marksheet-page {
-            width: 210mm; height: 297mm; padding: 15mm; margin: 0 auto;
+            width: 210mm; height: 297mm; padding: 12mm; margin: 0 auto;
             background: #fffdf5 !important; position: relative; box-sizing: border-box;
-            /* Forced Double Borders for Printing */
             border: 8px double var(--red) !important;
             outline: 2px solid var(--gold) !important; outline-offset: -12px;
             page-break-after: always; display: flex; flex-direction: column;
@@ -47,30 +45,46 @@
         .m-header { text-align: center; border-bottom: 2px solid var(--gold); padding-bottom: 10px; position: relative; z-index: 2;}
         .m-school-name { font-size: 36px; font-weight: 900; color: #d32f2f !important; margin: 0; }
         
+        /* Progress Report (Round Corner Design) */
         .m-banner { 
-            background: #673ab7 !important; color: white !important; font-size: 24px; font-weight: bold;
+            background: var(--red) !important; color: white !important; font-size: 24px; font-weight: bold;
             padding: 10px 60px; text-align: center; width: fit-content; margin: 15px auto; 
             border-radius: 50px; border: 2px solid var(--gold); text-transform: uppercase;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
         }
 
-        .m-info-table { width: 100%; margin: 15px 0; font-size: 18px; border-collapse: collapse; position: relative; z-index: 2;}
+        .m-info-table { width: 100%; margin: 10px 0; font-size: 18px; border-collapse: collapse; position: relative; z-index: 2;}
         .m-underline { border-bottom: 1.5px solid #000; font-weight: bold; color: #d32f2f; padding: 0 8px; }
 
         .m-marks-table { width: 100%; border-collapse: collapse; border: 2px solid #000; position: relative; z-index: 2;}
-        .m-marks-table th { background: #444 !important; color: white !important; padding: 8px; font-size: 13px; border: 1px solid #000; }
+        .m-marks-table th { background: #444 !important; color: white !important; padding: 10px 2px; font-size: 13px; border: 1px solid #000; }
+        .subject-row { background: #f9f9f9 !important; }
+        .subject-grade { color: #d32f2f !important; font-weight: bold; }
+
         .m-marks-table td { border: 1px solid #000; padding: 8px 4px; text-align: center; font-weight: bold; font-size: 15px; }
+        .total-col { background: #fff176 !important; color: #000 !important; font-size: 16px; border: 1px solid #000 !important; }
 
-        .total-col { background: #fff176 !important; color: #000 !important; font-size: 16px; }
-
+        /* Result Status Line (Round Corner Colorful) */
         .m-result-box { 
-            margin-top: 20px; border: 2px solid var(--red); padding: 15px; 
-            display: flex; justify-content: space-between; background: #fff9e6 !important; 
-            border-radius: 10px; font-size: 19px; font-weight: bold; position: relative; z-index: 2;
+            margin-top: 20px; border: 2.5px solid var(--red); padding: 15px; 
+            display: flex; justify-content: space-between; 
+            background: linear-gradient(to right, #fff9c4, #fffde7) !important; 
+            border-radius: 50px; font-size: 19px; font-weight: bold; position: relative; z-index: 2;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
+
+        .m-footer-info { margin-top: 15px; font-size: 18px; font-weight: bold; position: relative; z-index: 2; }
+        .m-remarks { color: #2e7d32 !important; }
+        .m-promotion { color: #1a237e !important; text-decoration: underline; }
+        .m-fail { color: #d32f2f !important; }
 
         .m-sig-row { display: flex; justify-content: space-between; margin-top: auto; padding-bottom: 10px; position: relative; z-index: 2;}
         .m-sig-box { border-top: 2px solid #000; width: 170px; text-align: center; font-weight: bold; padding-top: 5px; }
-        .floral-line { text-align: center; color: var(--gold); font-size: 26px; margin-top: 15px; letter-spacing: 5px; }
+        
+        /* Colorful Floral Line */
+        .floral-line { text-align: center; font-size: 26px; margin-top: 10px; letter-spacing: 5px; position: relative; z-index: 2;}
+        .f-gold { color: var(--gold); }
+        .f-red { color: var(--red); }
 
         @media print { .no-print { display: none; } body { background: white; } .marksheet-page { border: 8px double var(--red) !important; outline: 2px solid var(--gold) !important;} }
     </style>
@@ -85,11 +99,11 @@
 
 <div class="container no-print">
     <div id="teacher" class="section active">
-        <h3>Teacher Entry Mode</h3>
+        <h3>Teacher Marks Entry</h3>
         <div class="step-box">
             <label>1. Select Class</label>
             <select id="tClass" onchange="filterStudents()">
-                <option value="">-- Choose Class --</option>
+                <option value="">-- Choose --</option>
                 <option value="I">Class I</option><option value="II">Class II</option>
                 <option value="III">Class III</option><option value="IV">Class IV</option>
                 <option value="V">Class V</option><option value="VI">Class VI</option>
@@ -101,10 +115,10 @@
             <select id="tStudent" onchange="showStudentDetails()"></select>
         </div>
         <div id="detBox" style="display:none;">
-            <div>Student Name: <b id="detName"></b></div>
-            <div>Father Name: <b id="detFather"></b></div>
-            <div>Mother Name: <b id="detMother"></b></div>
-            <div>PEN No: <b id="detPen"></b></div>
+            <div>Name: <b id="detName"></b></div>
+            <div>Mother: <b id="detMother"></b></div>
+            <div>Father: <b id="detFather"></b></div>
+            <div>PEN: <b id="detPen"></b></div>
         </div>
         <div id="subjectStep" class="step-box" style="display:none;">
             <label>3. Select Subject</label>
@@ -131,18 +145,18 @@
     <div id="admin" class="section">
         <h3>Admin Management</h3>
         <div class="step-box">
-            <label>Upload Master CSV (All Data Sync)</label>
+            <label>Upload Master CSV</label>
             <input type="file" id="csvFile" accept=".csv">
             <button class="btn-action" style="background:var(--blue);" onclick="uploadCSV()">Sync Master Data</button>
         </div>
         <div class="step-box">
-            <label>Bulk Marksheet Printing (A4)</label>
+            <label>Print Class Marksheets</label>
             <select id="printClass">
                 <option value="I">Class I</option><option value="II">Class II</option><option value="III">Class III</option>
                 <option value="IV">Class IV</option><option value="V">Class V</option><option value="VI">Class VI</option>
                 <option value="VII">Class VII</option><option value="VIII">Class VIII</option>
             </select>
-            <button class="btn-action" style="background:var(--red);" onclick="generatePrint()">Generate Marksheets</button>
+            <button class="btn-action" style="background:var(--red);" onclick="generatePrint()">Generate A4 Sheets</button>
         </div>
     </div>
 </div>
@@ -159,8 +173,8 @@
 
     function showTab(id) {
         if (id === 'admin') { 
-            let p = prompt("Enter Admin Password:"); 
-            if (p !== ADMIN_PASS) { alert("Access Denied!"); return; } 
+            let p = prompt("Password:"); 
+            if (p !== ADMIN_PASS) return;
         }
         document.querySelectorAll('.section, .nav-btn').forEach(el => el.classList.remove('active'));
         document.getElementById(id).classList.add('active');
@@ -174,16 +188,14 @@
     function filterStudents() {
         const cls = document.getElementById('tClass').value;
         const sel = document.getElementById('tStudent');
-        sel.innerHTML = '<option value="">-- Choose Student --</option>';
+        sel.innerHTML = '<option value="">-- Select --</option>';
         MASTER.forEach((r, i) => { if(i>0 && r[3] == cls) sel.add(new Option(r[0], i)); });
         document.getElementById('studentStep').style.display='block';
-        document.getElementById('detBox').style.display='none'; // Hide details on class change
     }
 
-    // Fixed Student Detail Logic
     function showStudentDetails() {
         const i = document.getElementById('tStudent').value;
-        if(!i) { document.getElementById('detBox').style.display='none'; return; }
+        if(!i) return;
         document.getElementById('detName').innerText = MASTER[i][0];
         document.getElementById('detMother').innerText = MASTER[i][1];
         document.getElementById('detFather').innerText = MASTER[i][2];
@@ -195,7 +207,6 @@
     function loadMarks() {
         const sub = document.getElementById('tSubject').value;
         const i = document.getElementById('tStudent').value;
-        if(!sub || !i) return;
         const cols = colMap[sub];
         document.getElementById('m1').value = MASTER[i][cols[0]] || 0;
         document.getElementById('m2').value = MASTER[i][cols[1]] || 0;
@@ -213,41 +224,23 @@
         const sub = document.getElementById('tSubject').value;
         const vals = [document.getElementById('m1').value, document.getElementById('m2').value, document.getElementById('m3').value, document.getElementById('m4').value];
         await fetch(API, { method:"POST", body: JSON.stringify({action:"updateMarks", rowIndex: parseInt(i), colIndexes: colMap[sub], newValues: vals}) });
-        alert("Marks Updated Successfully!"); sync();
+        alert("Updated!"); sync();
     }
 
     function uploadCSV() {
         const file = document.getElementById('csvFile').files[0];
-        if(!file) return alert("Select CSV File!");
         const reader = new FileReader();
         reader.onload = async (e) => {
             const rows = e.target.result.split("\n").map(r => r.split(","));
             await fetch(API, { method:"POST", body: JSON.stringify({action:"updateMaster", data: rows}) });
-            alert("CSV Data Synced!"); sync();
+            alert("Synced!"); sync();
         };
         reader.readAsText(file);
     }
 
-    // Fixed Grade and DOB logic
     function getGrade(m) {
         if (m >= 180) return 'A+'; if (m >= 150) return 'A';
         if (m >= 120) return 'B'; if (m >= 90) return 'C'; if (m >= 66) return 'D'; return 'E';
-    }
-    
-    function formatDateToDDMMYYYY(dateStr) {
-        if (!dateStr) return "---";
-        try {
-            // Google Sheet date format often includes time "2010-03-25T00:00:00.000Z"
-            let dateOnly = dateStr.toString().split('T')[0]; 
-            let parts = dateOnly.split('-');
-            if (parts.length === 3) {
-                // If parts are [YYYY, MM, DD], convert to DD/MM/YYYY
-                if (parts[0].length === 4) return `${parts[2]}/${parts[1]}/${parts[0]}`;
-                // If parts are already [DD, MM, YYYY], return as is
-                if (parts[0].length <= 2) return `${parts[0]}/${parts[1]}/${parts[2]}`;
-            }
-            return dateStr;
-        } catch(e) { return dateStr; }
     }
 
     function generatePrint() {
@@ -263,22 +256,22 @@
                     if(s === 'physical') {
                         let g1 = getGrade((parseInt(r[c[1]])||0)*2.8);
                         let g2 = getGrade((parseInt(r[c[3]])||0)*2.8);
-                        rows += `<tr><td>${sName}</td><td>-</td><td>${g1}</td><td>-</td><td>${g2}</td><td class="total-col">-</td><td>A</td></tr>`;
+                        rows += `<tr class="subject-row"><td>${sName}</td><td>-</td><td>${g1}</td><td>-</td><td>${g2}</td><td class="total-col">-</td><td class="subject-grade">A</td></tr>`;
                     } else {
                         gt += t;
-                        rows += `<tr><td>${sName}</td><td>${r[c[0]]||0}</td><td>${r[c[1]]||0}</td><td>${r[c[2]]||0}</td><td>${r[c[3]]||0}</td><td class="total-col">${t}</td><td>${getGrade(t)}</td></tr>`;
+                        rows += `<tr class="subject-row"><td>${sName}</td><td>${r[c[0]]||0}</td><td>${r[c[1]]||0}</td><td>${r[c[2]]||0}</td><td>${r[c[3]]||0}</td><td class="total-col">${t}</td><td class="subject-grade">${getGrade(t)}</td></tr>`;
                     }
                 });
 
                 const perc = (gt / 14).toFixed(2);
                 const isPass = perc >= 33;
-                const nextCls = ["I","II","III","IV","V","VI","VII","VIII","IX"];
-                const pCls = nextCls[nextCls.indexOf(cls)+1] || "IX";
+                const nextClsArr = ["I","II","III","IV","V","VI","VII","VIII","IX"];
+                const pCls = nextClsArr[nextClsArr.indexOf(cls)+1] || "IX";
 
                 html += `
                 <div class="marksheet-page">
                     <div class="m-header">
-                        <div style="display:flex; align-items:center; justify-content:space-between; position:relative; z-index:10">
+                        <div style="display:flex; align-items:center; justify-content:space-between;">
                             <img src="2a7ade29-d3df-49ea-8b1d-63b8da857420.jpg" style="width:85px; border-radius:50%;">
                             <div style="flex:1;">
                                 <h1 class="m-school-name">K.R.R. JUNIOR HIGH SCHOOL</h1>
@@ -292,7 +285,7 @@
                     <table class="m-info-table">
                         <tr><td width="60%">Student Name : <span class="m-underline">${r[0]}</span></td><td>Roll No : <span class="m-underline">${r[4]}</span></td></tr>
                         <tr><td>Father Name : <span class="m-underline">Mr. ${r[2]}</span></td><td>Class : <span class="m-underline">${r[3]}</span></td></tr>
-                        <tr><td>Mother Name : <span class="m-underline">Mrs. ${r[1]}</span></td><td>Date of Birth : <span class="m-underline">${formatDateToDDMMYYYY(r[5])}</span></td></tr>
+                        <tr><td>Mother Name : <span class="m-underline">Mrs. ${r[1]}</span></td><td>Date of Birth : <span class="m-underline">${r[5]?r[5].toString().split('T')[0]:'---'}</span></td></tr>
                     </table>
                     <table class="m-marks-table">
                         <thead>
@@ -301,26 +294,35 @@
                         </thead>
                         <tbody>${rows}</tbody>
                     </table>
+                    
                     <div class="m-result-box">
-                        <span style="color:${isPass?'green':'red'}">Result Status: ${isPass?'PASS':'FAIL'}</span>
-                        <span>Grand Total: ${gt}/1400</span>
-                        <span>Percentage: ${perc}%</span>
+                        <span style="color:${isPass?'#2e7d32':'#d32f2f'}">Result: ${isPass?'PASS':'FAIL'}</span>
+                        <span style="color:#1a237e">Total: ${gt}/1400</span>
+                        <span style="color:#d32f2f">Percentage: ${perc}%</span>
                     </div>
-                    <div style="margin-top:20px; font-size:18px; font-weight:bold; position:relative; z-index:10;">
-                        Remarks: ${perc > 75 ? 'Excellent' : (perc > 33 ? 'Good' : 'Needs Improvement')} <br>
-                        Status: <span style="text-decoration:underline;">${isPass ? 'Promoted to Class ' + pCls : 'Detained in same class'}</span>
+
+                    <div class="m-footer-info">
+                        <span class="m-remarks">Teacher Remarks: ${perc > 80 ? 'Excellent' : (isPass ? 'Good' : 'Needs Work')}</span><br>
+                        <span>Promotion Status: </span>
+                        <span class="${isPass?'m-promotion':'m-fail'}">
+                            ${isPass ? 'Promoted to Class ' + pCls : 'Detained in same class'}
+                        </span>
                     </div>
+
                     <div class="m-sig-row">
-                        <div class="m-sig-box">Guardian Sign</div><div class="m-sig-box">Class Teacher</div><div class="m-sig-box">Principal Sign</div>
+                        <div class="m-sig-box">Guardian Sign</div><div class="m-sig-box">Class Teacher</div><div class="m-sig-box">Principal</div>
                     </div>
-                    <div class="floral-line">❦ ❀ ❦ ❀ ❦ ❀ ❦ ❀ ❦</div>
+                    
+                    <div class="floral-line">
+                        <span class="f-gold">❦</span> <span class="f-red">❀</span> <span class="f-gold">❦</span> <span class="f-red">❀</span> <span class="f-gold">❦</span> <span class="f-red">❀</span> <span class="f-gold">❦</span> <span class="f-red">❀</span> <span class="f-gold">❦</span>
+                    </div>
                 </div>`;
             }
         });
         const w = window.open('', '_blank');
         w.document.write(`<html><head><style>${document.head.innerHTML}</style></head><body>${html}</body></html>`);
         w.document.close();
-        setTimeout(() => w.print(), 1200);
+        setTimeout(() => w.print(), 1000);
     }
 </script>
 </body>
