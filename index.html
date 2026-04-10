@@ -15,7 +15,15 @@
         .section { display: none; }
         .section.active { display: block; }
         .step-box { margin-bottom: 15px; padding: 15px; border-radius: 8px; border-left: 5px solid var(--blue); background: #f8f9fa; }
-        select, input { width: 100%; padding: 12px; margin-top: 5px; border-radius: 6px; border: 1px solid #ccc; font-size: 16px; box-sizing: border-box; }
+        
+        /* Fixed Input Typing Issue */
+        select, input { 
+            width: 100%; padding: 12px; margin-top: 5px; border-radius: 6px; 
+            border: 1px solid #ccc; font-size: 16px; box-sizing: border-box; 
+            display: block;
+        }
+        input:focus { border-color: var(--blue); outline: none; background: #fff; }
+
         .btn-action { background: #2e7d32; color: white; border: none; padding: 15px; width: 100%; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 15px; font-size: 16px; }
 
         /* --- MARKSHEET PRINT DESIGN (A4) --- */
@@ -32,7 +40,7 @@
 
         .marksheet-page::before {
             content: ""; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 300px; height: 300px; background: url('2a7ade29-d3df-49ea-8b1d-63b8da857420.jpg') no-repeat center;
+            width: 350px; height: 250px; background: url('2a7ade29-d3df-49ea-8b1d-63b8da857420.jpg') no-repeat center;
             background-size: contain; opacity: 0.70; z-index: 0;
         }
 
@@ -108,10 +116,10 @@
         <div id="marksArea" style="display:none;">
             <p id="phyNote" style="color:red; font-weight:bold; display:none;">Note: Physical Education mein sirf Half Yearly aur Annual Marks bharein.</p>
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; background:#fff; padding:15px; border-radius:8px; border:1px solid #ddd;">
-                <div>FA I+II (30): <input type="number" id="m1"></div>
-                <div>Half Yearly (70): <input type="number" id="m2"></div>
-                <div>FA III+IV (30): <input type="number" id="m3"></div>
-                <div>Annual (70): <input type="number" id="m4"></div>
+                <div>FA I+II (30): <input type="number" id="m1" placeholder="0"></div>
+                <div>Half Yearly (70): <input type="number" id="m2" placeholder="0"></div>
+                <div>FA III+IV (30): <input type="number" id="m3" placeholder="0"></div>
+                <div>Annual (70): <input type="number" id="m4" placeholder="0"></div>
             </div>
             <button class="btn-action" onclick="saveData()">Update Marks</button>
         </div>
@@ -179,7 +187,6 @@
         document.getElementById('m3').value = MASTER[i][cols[2]] || 0;
         document.getElementById('m4').value = MASTER[i][cols[3]] || 0;
         
-        // Disable unnecessary boxes for Phy Edu
         document.getElementById('m1').disabled = (sub === 'physical');
         document.getElementById('m3').disabled = (sub === 'physical');
         
@@ -189,8 +196,18 @@
     async function saveData() {
         const i = document.getElementById('tStudent').value;
         const sub = document.getElementById('tSubject').value;
-        const vals = [document.getElementById('m1').value, document.getElementById('m2').value, document.getElementById('m3').value, document.getElementById('m4').value];
-        await fetch(API, { method:"POST", body: JSON.stringify({action:"updateMarks", rowIndex: parseInt(i), colIndexes: colMap[sub], newValues: vals}) });
+        // Fix: Ensure values are captured as numbers
+        const vals = [
+            Number(document.getElementById('m1').value) || 0, 
+            Number(document.getElementById('m2').value) || 0, 
+            Number(document.getElementById('m3').value) || 0, 
+            Number(document.getElementById('m4').value) || 0
+        ];
+        
+        await fetch(API, { 
+            method:"POST", 
+            body: JSON.stringify({action:"updateMarks", rowIndex: parseInt(i), colIndexes: colMap[sub], newValues: vals}) 
+        });
         alert("Updated Successfully!"); sync();
     }
 
