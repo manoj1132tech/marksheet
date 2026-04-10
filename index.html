@@ -3,179 +3,149 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KRR School Portal - Final A4 Perfect</title>
+    <title>KRR School Portal - Final Colorful A4</title>
     <style>
         :root { 
             --red: #d32f2f; --gold: #b8860b; --blue: #1a237e; --purple: #673ab7;
-            --green: #1b5e20;
             --sub-hindi: #fff0f5; --sub-english: #f1f8ff; --sub-math: #f0fff4; 
             --sub-sci: #fffdf0; --sub-social: #fdf5ff; --sub-comp: #f0f3ff; 
             --sub-drawing: #fff3f0; --sub-phy: #e8f5e9;
         }
         
         body { font-family: 'Times New Roman', serif; background: #f0f2f5; margin: 0; padding: 0; }
-        .nav-bar { background: var(--blue); padding: 15px; text-align: center; color: white; position: sticky; top:0; z-index:1000; }
-        .nav-btn { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 10px 20px; cursor: pointer; border-radius: 5px; margin: 5px; font-weight: bold; }
-        .nav-btn.active { background: var(--red); }
-        .container { max-width: 900px; margin: 20px auto; background: white; padding: 25px; border-radius: 12px; }
+        .no-print-nav { background: var(--blue); padding: 15px; text-align: center; color: white; }
 
-        /* --- MARKSHEET A4 PERFECT DESIGN --- */
+        /* --- MARKSHEET A4 MASTER DESIGN --- */
         .marksheet-page {
-            width: 210mm; height: 297mm; padding: 8mm 12mm; margin: 0 auto;
+            width: 210mm; height: 297mm; padding: 10mm 15mm; margin: 0 auto;
             background: #fffdf5 !important; position: relative; box-sizing: border-box;
-            border: 10px double var(--red) !important;
-            outline: 3px solid var(--gold) !important; outline-offset: -15px;
+            border: 8px double var(--red) !important;
+            outline: 2px solid var(--gold) !important; outline-offset: -12px;
             page-break-after: always; display: flex; flex-direction: column;
-            overflow: hidden;
-            -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important;
+            overflow: hidden; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important;
         }
 
-        /* Watermark: Set exactly at 70% opacity behind the marks table area */
+        /* Watermark - Placed specifically behind marks table */
         .m-watermark {
-            position: absolute; top: 60%; left: 50%; transform: translate(-50%, -50%);
-            width: 450px; opacity: 0.70; z-index: 1; pointer-events: none;
+            position: absolute; top: 55%; left: 50%; transform: translate(-50%, -50%);
+            width: 400px; opacity: 0.70; z-index: 1; pointer-events: none;
         }
 
-        .m-header { text-align: center; border-bottom: 2px solid var(--gold); padding-bottom: 5px; position: relative; z-index: 2;}
-        .m-school-name { font-size: 40px; font-weight: 900; color: var(--red) !important; margin: 0; text-transform: uppercase; text-shadow: 2px 2px 3px rgba(0,0,0,0.2); }
+        .m-header { text-align: center; border-bottom: 2px solid var(--gold); padding-bottom: 10px; position: relative; z-index: 2;}
+        .m-school-name { font-size: 38px; font-weight: 900; color: var(--red) !important; margin: 0; text-transform: uppercase; text-shadow: 1px 1px 2px rgba(0,0,0,0.3); }
         .m-session { color: var(--blue) !important; font-weight: bold; font-size: 20px; margin: 5px 0; }
         
         .m-banner { 
             background: var(--purple) !important; color: white !important; font-size: 24px; font-weight: bold;
-            padding: 10px 60px; text-align: center; width: fit-content; margin: 12px auto; 
+            padding: 10px 60px; text-align: center; width: fit-content; margin: 15px auto; 
             border-radius: 50px; border: 2px solid var(--gold); text-transform: uppercase; box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            position: relative; z-index: 2;
         }
 
-        .m-info-table { width: 100%; margin: 10px 0; font-size: 20px; border-collapse: collapse; position: relative; z-index: 2;}
-        .m-name-underline { border-bottom: 2.5px solid #000; font-weight: bold; color: var(--red) !important; padding: 0 10px; font-size: 24px; }
-        .m-father-val { font-weight: bold; color: var(--blue) !important; padding: 0 10px; }
-        .m-class-val { font-weight: bold; color: var(--green) !important; padding: 0 10px; }
+        .m-info-table { width: 100%; margin: 15px 0; font-size: 20px; border-collapse: collapse; position: relative; z-index: 2;}
+        .m-name-underline { border-bottom: 2.5px solid #000; font-weight: bold; color: var(--red) !important; padding: 0 8px; font-size: 24px; }
+        .m-val { font-weight: bold; padding: 0 8px; color: var(--blue) !important; }
 
-        .m-marks-table { width: 100%; border-collapse: collapse; border: 2.5px solid #000; position: relative; z-index: 2; background: rgba(255,255,255,0.3);}
-        .m-marks-table th { background: #333 !important; color: white !important; padding: 10px 2px; border: 1.5px solid #000; font-size: 15px; }
-        .m-marks-table td { border: 1.5px solid #000; padding: 7px 4px; text-align: center; font-weight: bold; font-size: 17px; }
+        .m-marks-table { width: 100%; border-collapse: collapse; border: 2px solid #000; position: relative; z-index: 2; background: rgba(255,255,255,0.2);}
+        .m-marks-table th { background: #333 !important; color: white !important; padding: 10px 2px; border: 1px solid #000; font-size: 14px; }
+        .m-marks-table td { border: 1px solid #000; padding: 8px 4px; text-align: center; font-weight: bold; font-size: 16px; }
 
-        .sub-name { text-align: left !important; padding-left: 15px !important; color: var(--blue) !important; width: 200px; }
-        .total-cell { background: #ffd700 !important; color: #000 !important; border: 2px solid #000 !important; }
-        .grade-cell { color: var(--red) !important; font-weight: 900 !important; font-size: 19px; }
+        .sub-name-cell { text-align: left !important; padding-left: 12px !important; color: var(--blue) !important; width: 180px; }
+        .total-cell { background: #fff176 !important; color: #000 !important; border: 1.5px solid #000 !important; }
+        .grade-cell { color: var(--red) !important; font-weight: 900 !important; background: #f9f9f9 !important; }
 
         .m-result-box { 
-            margin-top: 15px; border: 3px solid var(--red); padding: 15px; 
+            margin-top: 20px; border: 3px solid var(--red); padding: 15px; 
             display: flex; justify-content: space-between; 
-            background: #fff9c4 !important; border-radius: 50px; 
-            font-size: 22px; font-weight: bold; position: relative; z-index: 2;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+            background: #fff9e6 !important; border-radius: 50px; 
+            font-size: 20px; font-weight: bold; position: relative; z-index: 2;
         }
 
-        .m-sig-row { display: flex; justify-content: space-between; margin-top: auto; padding-bottom: 5px; position: relative; z-index: 2;}
-        .m-sig-box { border-top: 2px solid #000; width: 180px; text-align: center; font-weight: bold; padding-top: 8px; font-size: 16px; }
+        .m-sig-row { display: flex; justify-content: space-between; margin-top: auto; padding-bottom: 10px; position: relative; z-index: 2;}
+        .m-sig-box { border-top: 2px solid #000; width: 170px; text-align: center; font-weight: bold; padding-top: 5px; }
         
-        .floral-line { text-align: center; font-size: 32px; margin-top: 10px; letter-spacing: 15px; position: relative; z-index: 2;}
+        .floral-line { text-align: center; font-size: 28px; margin-top: 15px; letter-spacing: 10px; position: relative; z-index: 2;}
         .f-gold { color: var(--gold); } .f-red { color: var(--red); }
 
-        @media print { 
-            .no-print { display: none; } 
-            body { background: white; margin: 0; padding: 0; }
-            @page { size: A4; margin: 0; }
-            .marksheet-page { margin: 0; border: 10px double var(--red) !important; }
-        }
+        @media print { .no-print { display: none; } body { background: white; margin: 0; } .marksheet-page { margin: 0; } }
     </style>
 </head>
 <body>
 
-<div class="nav-bar no-print">
-    <h2>K.R.R. JUNIOR HIGH SCHOOL - PORTAL</h2>
-    <button class="nav-btn active" onclick="showTab('teacher')">TEACHER ENTRY</button>
-    <button class="nav-btn" onclick="showTab('admin')">ADMIN PANEL</button>
-</div>
-
-<div class="container no-print">
-    <div id="teacher" class="section active">
-        <div class="step-box">
-            <label>1. Select Class</label>
-            <select id="tClass" onchange="filterStudents()">
-                <option value="">-- Select --</option>
-                <option value="I">Class I</option><option value="VIII">Class VIII</option>
-            </select>
-        </div>
-        <div id="studentStep" class="step-box" style="display:none;"><label>2. Select Student</label><select id="tStudent" onchange="document.getElementById('subjectStep').style.display='block';"></select></div>
-        <div id="subjectStep" class="step-box" style="display:none;">
-            <label>3. Select Subject</label>
-            <select id="tSubject" onchange="loadMarks()">
-                <option value="hindi">HINDI</option><option value="math">MATHEMATICS</option>
-            </select>
-        </div>
-        <div id="marksArea" style="display:none;">
-            <input type="number" id="m1" placeholder="FA I+II"> <input type="number" id="m2" placeholder="Half Yearly">
-            <button class="btn-action" onclick="saveData()">Save Marks</button>
-        </div>
-    </div>
-    <div id="admin" class="section">
-        <button class="btn-action" style="background:var(--red);" onclick="generatePrint()">Print All Marksheets</button>
-    </div>
+<div class="no-print-nav no-print">
+    <h2>K.R.R. JUNIOR HIGH SCHOOL ADMIN</h2>
+    <button onclick="generatePrint()" style="padding:10px 20px; cursor:pointer; font-weight:bold;">PRINT ALL MARKSHEETS</button>
 </div>
 
 <script>
     const API = "https://script.google.com/macros/s/AKfycbwf6Ay8MZy0Qr3vkhFFDGR0a0azE5amQMVIh0BMTD2T3Uxoah5fxwUFQVfUQ7frr8a7ZQ/exec";
     let MASTER = [];
+
     async function sync() { const res = await fetch(API); MASTER = await res.json(); }
     sync();
 
-    function showTab(id) {
-        document.querySelectorAll('.section').forEach(el => el.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-    }
+    const colMap = { 
+        hindi:[11,12,13,14], english:[7,8,9,10], math:[15,16,17,18], science:[19,20,21,22], 
+        social:[23,24,25,26], computer:[27,28,29,30], drawing:[31,32,33,34], physical:[35,36,37,38] 
+    };
 
-    // Date formatting to dd/mm/yyyy
-    function formatDOB(val) {
-        if (!val) return "---";
-        let date = new Date(val);
-        if (isNaN(date)) return val.toString().split('T')[0];
-        let d = String(date.getDate()).padStart(2, '0');
-        let m = String(date.getMonth() + 1).padStart(2, '0');
-        let y = date.getFullYear();
-        return `${d}/${m}/${y}`;
+    function formatDOB(dateStr) {
+        if (!dateStr) return "---";
+        const date = new Date(dateStr);
+        if (isNaN(date)) return dateStr.split('T')[0];
+        return `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth()+1).padStart(2, '0')}/${date.getFullYear()}`;
     }
-
-    const colMap = { hindi:[11,12,13,14], english:[7,8,9,10], math:[15,16,17,18], science:[19,20,21,22], social:[23,24,25,26], computer:[27,28,29,30], drawing:[31,32,33,34], physical:[35,36,37,38] };
 
     function generatePrint() {
-        const cls = "VIII"; // Example
         let html = '';
         MASTER.forEach((r, i) => {
-            if(i > 0 && r[3] == cls) {
+            if(i > 0 && r[3]) { // Logic for all students
                 let rows = '', gt = 0;
                 Object.keys(colMap).forEach(s => {
                     const c = colMap[s];
                     const t = (parseInt(r[c[0]])||0)+(parseInt(r[c[1]])||0)+(parseInt(r[c[2]])||0)+(parseInt(r[c[3]])||0);
-                    let sColor = s === 'hindi' ? 'var(--sub-hindi)' : s === 'math' ? 'var(--sub-math)' : 'white';
+                    let sName = s === 'social' ? 'SOCIAL SCIENCE' : s === 'physical' ? 'PHY. HEALTH EDU.' : s.toUpperCase();
+                    let sColor = s === 'hindi' ? 'var(--sub-hindi)' : s === 'english' ? 'var(--sub-english)' : s === 'math' ? 'var(--sub-math)' : s === 'science' ? 'var(--sub-sci)' : s === 'drawing' ? 'var(--sub-drawing)' : s === 'computer' ? 'var(--sub-comp)' : 'var(--sub-social)';
+                    
                     if(s !== 'physical') gt += t;
-                    let gr = t>=180?'A+':t>=150?'A':t>=120?'B':t>=90?'C':'D';
+                    let gr = s==='physical'?'A':(t>=180?'A+':t>=150?'A':t>=120?'B':t>=90?'C':t>=66?'D':'E');
 
                     rows += `<tr style="background-color:${sColor} !important;">
-                        <td class="sub-name">${s.toUpperCase()}</td>
+                        <td class="sub-name-cell">${sName}</td>
                         <td>${r[c[0]]||0}</td><td>${r[c[1]]||0}</td><td>${r[c[2]]||0}</td><td>${r[c[3]]||0}</td>
-                        <td class="total-cell">${t}</td><td class="grade-cell">${gr}</td>
+                        <td class="total-cell">${s==='physical'?'-':t}</td>
+                        <td class="grade-cell">${gr}</td>
                     </tr>`;
                 });
 
                 const perc = (gt / 14).toFixed(2);
+                let rem = perc >= 80 ? "Excellent" : perc >= 60 ? "Very Good" : perc >= 45 ? "Good" : "Fair";
 
                 html += `
                 <div class="marksheet-page">
                     <img src="2a7ade29-d3df-49ea-8b1d-63b8da857420.jpg" class="m-watermark">
+                    
                     <div class="m-header">
-                        <h1 class="m-school-name">K.R.R. JUNIOR HIGH SCHOOL</h1>
-                        <p style="font-weight:bold; margin:2px;">MANPUR BAHERI, BAREILLY (U.P.)</p>
-                        <p class="m-session">SESSION : 2025 - 2026</p>
+                        <div style="display:flex; align-items:center; justify-content:space-between;">
+                            <img src="2a7ade29-d3df-49ea-8b1d-63b8da857420.jpg" style="width:85px; border-radius:50%;">
+                            <div style="flex:1;">
+                                <h1 class="m-school-name">K.R.R. JUNIOR HIGH SCHOOL</h1>
+                                <p style="margin:5px; font-weight:bold;">MANPUR BAHERI, BAREILLY (U.P.) 243201</p>
+                                <p class="m-session">SESSION : 2025 - 2026</p>
+                            </div>
+                            <div style="width:85px;"></div>
+                        </div>
                     </div>
+                    
                     <div class="m-banner">PROGRESS REPORT</div>
+                    
                     <table class="m-info-table">
                         <tr><td colspan="2">Student Name : <span class="m-name-underline">${r[0]}</span></td></tr>
-                        <tr><td width="60%">Mother Name : <span class="m-father-val">Mrs. ${r[1]}</span></td><td>Roll No : <span class="m-class-val">${r[4]}</span></td></tr>
-                        <tr><td>Father Name : <span class="m-father-val">Mr. ${r[2]}</span></td><td>Class : <span class="m-class-val">${r[3]}</span></td></tr>
-                        <tr><td>Date of Birth : <span class="m-class-val">${formatDOB(r[5])}</span></td><td>PEN No : <span class="m-class-val">${r[6]||"---"}</span></td></tr>
+                        <tr><td width="65%">Mother Name : <span class="m-val">Mrs. ${r[1]}</span></td><td>Roll No : <span class="m-val">${r[4]}</span></td></tr>
+                        <tr><td>Father Name : <span class="m-val">Mr. ${r[2]}</span></td><td>Class : <span class="m-val">${r[3]}</span></td></tr>
+                        <tr><td>Date of Birth : <span class="m-val">${formatDOB(r[5])}</span></td><td>PEN No : <span class="m-val">${r[6]||"---"}</span></td></tr>
                     </table>
+
                     <table class="m-marks-table">
                         <thead>
                             <tr><th rowspan="2">SUBJECTS</th><th>FA I+II</th><th>HALF YEARLY</th><th>FA III+IV</th><th>ANNUAL</th><th class="total-cell">TOTAL</th><th>GRADE</th></tr>
@@ -183,26 +153,32 @@
                         </thead>
                         <tbody>${rows}</tbody>
                     </table>
+
                     <div class="m-result-box">
-                        <span style="color:var(--green)">Result: ${perc>=33?'PASS':'FAIL'}</span>
+                        <span style="color:${perc>=33?'green':'red'}">Result: ${perc>=33?'PASS':'FAIL'}</span>
                         <span>Grand Total: ${gt}/1400</span>
                         <span>Percentage: ${perc}%</span>
                     </div>
-                    <div style="margin-top:20px; font-size:20px; font-weight:bold; position:relative; z-index:2;">
-                        <span>Promotion Status: <span style="text-decoration:underline; color:var(--red);">${perc>=33?'Promoted to next class':'Detained'}</span></span>
+
+                    <div style="margin-top:20px; font-size:18px; font-weight:bold; position:relative; z-index:2;">
+                        <span style="color:var(--blue)">Teacher Remarks: <span style="color:green;">${rem}</span></span><br><br>
+                        <span>Promotion: <span style="text-decoration:underline; color:var(--red);">${perc>=33?'Promoted to next class':'Detained in same class'}</span></span>
                     </div>
+
                     <div class="m-sig-row">
-                        <div class="m-sig-box">Guardian Sign</div><div class="m-sig-box">Class Teacher</div><div class="m-sig-box">Principal Sign</div>
+                        <div class="m-sig-box">Guardian Sign</div><div class="m-sig-box">Class Teacher</div><div class="m-sig-box">Principal</div>
                     </div>
+
                     <div class="floral-line">
                         <span class="f-gold">❦</span> <span class="f-red">❀</span> <span class="f-gold">❦</span> <span class="f-red">❀</span> <span class="f-gold">❦</span> <span class="f-red">❀</span> <span class="f-gold">❦</span>
                     </div>
                 </div>`;
             }
         });
-        const w = window.open();
+        const w = window.open('', '_blank');
         w.document.write(`<html><head><style>${document.head.innerHTML}</style></head><body>${html}</body></html>`);
         w.document.close();
+        setTimeout(() => w.print(), 1000);
     }
 </script>
 </body>
