@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KRR Portal - Final mk </title>
+    <title>KRR Portal - Final Optimized</title>
     <style>
         :root { --red: #d32f2f; --gold: #b8860b; --blue: #1a237e; }
         
@@ -18,13 +18,15 @@
         select, input { width: 100%; padding: 12px; margin-top: 5px; border-radius: 6px; border: 1px solid #ccc; font-size: 16px; box-sizing: border-box; }
         .btn-action { background: #2e7d32; color: white; border: none; padding: 15px; width: 100%; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 15px; font-size: 16px; }
 
-        /* --- MARKSHEET PRINT DESIGN --- */
+        /* --- MARKSHEET PRINT DESIGN (A4) --- */
+        @page { size: A4; margin: 0; }
         .marksheet-page {
-            width: 210mm; height: 297mm; padding: 12mm 15mm; margin: 0 auto;
+            width: 210mm; height: 296mm; padding: 10mm 15mm; margin: 0 auto;
             background: #fffdf5 !important; position: relative; box-sizing: border-box;
             border: 8px double #d32f2f !important;
             outline: 2px solid #b8860b !important; outline-offset: -12px;
             page-break-after: always; display: flex; flex-direction: column;
+            overflow: hidden;
             -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important;
         }
 
@@ -34,32 +36,38 @@
             background-size: contain; opacity: 0.70; z-index: 0;
         }
 
-        .m-header { text-align: center; border-bottom: 2px solid var(--gold); padding-bottom: 10px; position: relative; z-index: 2;}
+        .m-header { text-align: center; border-bottom: 2px solid var(--gold); padding-bottom: 8px; position: relative; z-index: 2;}
         .m-school-name { font-size: 38px; font-weight: 900; color: #d32f2f !important; margin: 0; }
         
+        .session-tag { 
+            background: #1a237e !important; color: #fff !important; 
+            padding: 4px 20px; border-radius: 15px; display: inline-block; 
+            border: 1px solid #b8860b; margin-top: 5px; font-size: 18px;
+        }
+
         .m-banner { 
             background: #d32f2f !important; color: white !important; font-size: 24px; font-weight: bold;
-            padding: 8px 50px; text-align: center; width: fit-content; margin: 12px auto; 
+            padding: 6px 50px; text-align: center; width: fit-content; margin: 10px auto; 
             border-radius: 50px; border: 2px solid #b8860b; text-transform: uppercase;
         }
 
-        .m-info-table { width: 100%; margin: 10px 0; font-size: 19px; border-collapse: collapse; position: relative; z-index: 2;}
-        /* Colors Exchanged as per request */
+        .m-info-table { width: 100%; margin: 15px 0; font-size: 19px; border-collapse: collapse; position: relative; z-index: 2;}
+        .m-info-table td { padding: 8px 0; }
         .m-label { font-weight: bold; color: #000; }
         .m-val-red { font-weight: bold; color: #d32f2f; padding: 0 5px; }
 
-        .m-marks-table { width: 100%; border-collapse: collapse; border: 2px solid #000; position: relative; z-index: 2; background: rgba(255,255,255,0.8) !important;}
-        .m-marks-table th { background: #444 !important; color: white !important; padding: 8px; border: 1px solid #000; }
-        .m-marks-table td { border: 1px solid #000; padding: 8px 4px; text-align: center; font-weight: bold; font-size: 15px; }
+        .m-marks-table { width: 100%; border-collapse: collapse; border: 2px solid #000; position: relative; z-index: 2; background: rgba(255, 253, 245, 0.2) !important;}
+        .m-marks-table th { background: #444 !important; color: white !important; padding: 6px; border: 1px solid #000; }
+        .m-marks-table td { border: 1px solid #000; padding: 6px 4px; text-align: center; font-weight: bold; font-size: 15px; }
 
-        .subject-name { text-align: left !important; padding-left: 15px !important; color: #1a237e !important; background: #e3f2fd !important; }
-        .total-col { background: #fff176 !important; color: #b71c1c !important; border: 1.5px solid black !important; }
-        .grade-col { color: #2e7d32 !important; background: #f1f8e9 !important; }
+        .subject-name { text-align: left !important; padding-left: 15px !important; color: #1a237e !important; background: rgba(227, 242, 253, 0.7) !important; }
+        .total-col { background: rgba(255, 241, 118, 0.6) !important; color: #b71c1c !important; border: 1.5px solid black !important; }
+        .grade-col { color: #2e7d32 !important; background: rgba(241, 248, 233, 0.6) !important; }
 
-        .m-sig-row { display: flex; justify-content: space-between; margin-top: auto; padding-bottom: 10px; position: relative; z-index: 2;}
-        .m-sig-box { border-top: 2px solid #000; width: 170px; text-align: center; font-weight: bold; padding-top: 5px; }
+        .m-sig-row { display: flex; justify-content: space-between; margin-top: auto; padding-bottom: 20px; position: relative; z-index: 2;}
+        .m-sig-box { border-top: 2px solid #000; width: 160px; text-align: center; font-weight: bold; padding-top: 5px; }
 
-        @media print { .no-print { display: none !important; } .marksheet-page { margin: 0 !important; } }
+        @media print { .no-print { display: none !important; } }
     </style>
 </head>
 <body>
@@ -84,8 +92,7 @@
             </select>
         </div>
         <div id="studentStep" class="step-box" style="display:none;">
-            <label>2. Select Student</label>
-            <select id="tStudent" onchange="loadStudent()"></select>
+            <label>2. Select Student</label><select id="tStudent" onchange="loadStudent()"></select>
             <div id="studentInfoBox" style="margin-top:10px; font-size:14px; color:#555; display:none;"></div>
         </div>
         <div id="subjectStep" class="step-box" style="display:none;">
@@ -99,6 +106,7 @@
             </select>
         </div>
         <div id="marksArea" style="display:none;">
+            <p id="phyNote" style="color:red; font-weight:bold; display:none;">Note: Physical Education mein sirf Half Yearly aur Annual Marks bharein.</p>
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; background:#fff; padding:15px; border-radius:8px; border:1px solid #ddd;">
                 <div>FA I+II (30): <input type="number" id="m1"></div>
                 <div>Half Yearly (70): <input type="number" id="m2"></div>
@@ -112,17 +120,11 @@
     <div id="admin" class="section">
         <h3>Admin Management</h3>
         <div class="step-box">
-            <label>Upload CSV File</label>
-            <input type="file" id="csvFile" accept=".csv">
-            <button class="btn-action" style="background:var(--blue);" onclick="uploadCSV()">Sync Master Data</button>
+            <label>Upload CSV File</label><input type="file" id="csvFile" accept=".csv"><button class="btn-action" style="background:var(--blue);" onclick="uploadCSV()">Sync Master Data</button>
         </div>
         <div class="step-box">
             <label>Bulk Print Marksheets</label>
-            <select id="printClass">
-                <option value="I">Class I</option><option value="II">Class II</option><option value="III">Class III</option>
-                <option value="IV">Class IV</option><option value="V">Class V</option><option value="VI">Class VI</option>
-                <option value="VII">Class VII</option><option value="VIII">Class VIII</option>
-            </select>
+            <select id="printClass"><option value="I">Class I</option><option value="II">Class II</option><option value="III">Class III</option><option value="IV">Class IV</option><option value="V">Class V</option><option value="VI">Class VI</option><option value="VII">Class VII</option><option value="VIII">Class VIII</option></select>
             <button class="btn-action" style="background:var(--red);" onclick="generatePrint()">Generate Marksheets</button>
         </div>
     </div>
@@ -168,11 +170,19 @@
         const sub = document.getElementById('tSubject').value;
         const i = document.getElementById('tStudent').value;
         if(!sub || !i) return;
+        
+        document.getElementById('phyNote').style.display = (sub === 'physical') ? 'block' : 'none';
+        
         const cols = colMap[sub];
         document.getElementById('m1').value = MASTER[i][cols[0]] || 0;
         document.getElementById('m2').value = MASTER[i][cols[1]] || 0;
         document.getElementById('m3').value = MASTER[i][cols[2]] || 0;
         document.getElementById('m4').value = MASTER[i][cols[3]] || 0;
+        
+        // Disable unnecessary boxes for Phy Edu
+        document.getElementById('m1').disabled = (sub === 'physical');
+        document.getElementById('m3').disabled = (sub === 'physical');
+        
         document.getElementById('marksArea').style.display='block';
     }
 
@@ -181,7 +191,7 @@
         const sub = document.getElementById('tSubject').value;
         const vals = [document.getElementById('m1').value, document.getElementById('m2').value, document.getElementById('m3').value, document.getElementById('m4').value];
         await fetch(API, { method:"POST", body: JSON.stringify({action:"updateMarks", rowIndex: parseInt(i), colIndexes: colMap[sub], newValues: vals}) });
-        alert("Updated!"); sync();
+        alert("Updated Successfully!"); sync();
     }
 
     function uploadCSV() {
@@ -209,11 +219,11 @@
         if (m >= 120) return 'B'; if (m >= 90) return 'C'; if (m >= 66) return 'D'; return 'E';
     }
 
-    // Dynamic Grade for Physical Education
-    function getPhyGrade(marks) {
-        let m = parseInt(marks) || 0;
-        if (m >= 63) return 'A+'; if (m >= 52) return 'A';
-        if (m >= 42) return 'B'; if (m >= 31) return 'C'; if (m >= 23) return 'D'; return 'E';
+    function getPhyGrade(m) {
+        let val = parseInt(m) || 0;
+        let p = (val / 70) * 100;
+        if (p >= 90) return 'A+'; if (p >= 75) return 'A';
+        if (p >= 60) return 'B'; if (p >= 45) return 'C'; if (p >= 33) return 'D'; return 'E';
     }
 
     function generatePrint() {
@@ -226,10 +236,11 @@
                     const c = colMap[s];
                     const t = (parseInt(r[c[0]])||0)+(parseInt(r[c[1]])||0)+(parseInt(r[c[2]])||0)+(parseInt(r[c[3]])||0);
                     let sName = s === 'social' ? 'SOCIAL SCIENCE' : s === 'physical' ? 'PHY. HEALTH EDU.' : s.toUpperCase();
+                    
                     if(s === 'physical') {
-                        let g1 = getPhyGrade(r[c[1]]);
-                        let g2 = getPhyGrade(r[c[3]]);
-                        rows += `<tr><td class="subject-name">${sName}</td><td>-</td><td>${g1}</td><td>-</td><td>${g2}</td><td class="total-col">-</td><td class="grade-col">A</td></tr>`;
+                        let gHalf = getPhyGrade(r[c[1]]);
+                        let gAnnual = getPhyGrade(r[c[3]]);
+                        rows += `<tr><td class="subject-name">${sName}</td><td>-</td><td>${gHalf}</td><td>-</td><td>${gAnnual}</td><td class="total-col">-</td><td class="grade-col">A</td></tr>`;
                     } else {
                         gt += t;
                         rows += `<tr><td class="subject-name">${sName}</td><td>${r[c[0]]||0}</td><td>${r[c[1]]||0}</td><td>${r[c[2]]||0}</td><td>${r[c[3]]||0}</td><td class="total-col">${t}</td><td class="grade-col">${getGrade(t)}</td></tr>`;
@@ -247,7 +258,7 @@
                             <div style="flex:1;">
                                 <h1 class="m-school-name">K.R.R. JUNIOR HIGH SCHOOL</h1>
                                 <p style="margin:5px; font-weight:bold; font-size:18px;">MANPUR BAHERI, BAREILLY (U.P.)</p>
-                                <p style="color:var(--blue); font-weight:bold; font-size:18px;">SESSION : <span style="color:#1565c0;">2025 - 2026</span></p>
+                                <div class="session-tag">SESSION : 2025 - 2026</div>
                             </div>
                             <div style="width:90px;"></div>
                         </div>
@@ -266,19 +277,19 @@
                         </thead>
                         <tbody>${rows}</tbody>
                     </table>
-                    <div style="margin-top:15px; border: 2.5px solid #d32f2f; padding: 12px; display: flex; justify-content: space-between; background: #fff9e6 !important; border-radius: 40px; font-size: 19px; font-weight: bold; position: relative; z-index: 2;">
+                    <div style="margin-top:15px; border: 2.5px solid #d32f2f; padding: 12px; display: flex; justify-content: space-between; background: rgba(255, 249, 230, 0.8) !important; border-radius: 40px; font-size: 19px; font-weight: bold; position: relative; z-index: 2;">
                         <span style="color:${isPass?'green':'red'}">Result: ${isPass?'PASS':'FAIL'}</span>
                         <span>Total: ${gt}/1400</span>
                         <span>Percentage: ${perc}%</span>
                     </div>
-                    <div style="margin-top:20px; font-weight:bold; font-size:18px; position:relative; z-index:2;">
+                    <div style="margin-top:15px; font-weight:bold; font-size:18px; position:relative; z-index:2;">
                         <span>Remarks: <span style="color:green;">${perc > 75 ? 'Excellent Performance' : (isPass ? 'Good, Keep it up' : 'Hard work required')}</span></span><br><br>
                         <span>Promotion: ${isPass ? 'Promoted to next class' : 'Detained in same class'}</span>
                     </div>
                     <div class="m-sig-row">
                         <div class="m-sig-box">Guardian Sign</div><div class="m-sig-box">Class Teacher</div><div class="m-sig-box">Principal</div>
                     </div>
-                    <div style="text-align:center; font-size:26px; margin-top:10px; letter-spacing:5px;">
+                    <div style="text-align:center; font-size:26px; margin-top:5px; letter-spacing:5px;">
                         <span style="color:#b8860b;">❦</span> <span style="color:#d32f2f;">❀</span> <span style="color:#b8860b;">❦</span> <span style="color:#d32f2f;">❀</span> <span style="color:#b8860b;">❦</span>
                     </div>
                 </div>`;
