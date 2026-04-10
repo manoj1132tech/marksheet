@@ -30,7 +30,8 @@
 
         .marksheet-page::before {
             content: ""; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 500px; height: 500px; background: url('2a7ade29-d3df-49ea-8b1d-63b8da857420.jpg') no-repeat center;
+            /* Watermark Height Reduced from 500px to 420px */
+            width: 420px; height: 420px; background: url('2a7ade29-d3df-49ea-8b1d-63b8da857420.jpg') no-repeat center;
             background-size: contain; opacity: 0.60; z-index: 0;
         }
 
@@ -45,7 +46,6 @@
 
         .m-info-table { width: 100%; margin: 10px 0; font-size: 19px; border-collapse: collapse; position: relative; z-index: 2;}
         .m-info-table td { padding: 5px 0; }
-        /* No underline as requested */
         .m-val { font-weight: bold; color: #000; padding: 0 5px; }
         .m-label-red { font-weight: bold; color: #d32f2f; }
 
@@ -53,7 +53,6 @@
         .m-marks-table th { background: #444 !important; color: white !important; padding: 8px; border: 1px solid #000; }
         .m-marks-table td { border: 1px solid #000; padding: 8px 4px; text-align: center; font-weight: bold; font-size: 15px; }
 
-        /* Colorful Cells */
         .subject-name { text-align: left !important; padding-left: 15px !important; color: #1a237e !important; background: #e3f2fd !important; }
         .total-col { background: #fff176 !important; color: #b71c1c !important; font-size: 16px; border: 1.5px solid black !important; }
         .grade-col { color: #2e7d32 !important; background: #f1f8e9 !important; }
@@ -207,7 +206,6 @@
         reader.readAsText(file);
     }
 
-    // Fixed DD/MM/YYYY DOB Logic
     function formatDOB(val) {
         if(!val) return "---";
         try {
@@ -262,7 +260,7 @@
                             <div style="flex:1;">
                                 <h1 class="m-school-name">K.R.R. JUNIOR HIGH SCHOOL</h1>
                                 <p style="margin:5px; font-weight:bold; font-size:18px;">MANPUR BAHERI, BAREILLY (U.P.)</p>
-                                <p style="color:var(--blue); font-weight:bold; font-size:18px;">SESSION : 2025 - 2026</p>
+                                <p style="color:var(--blue); font-weight:bold; font-size:18px;">SESSION : <span style="color:#1565c0;">2025 - 2026</span></p>
                             </div>
                             <div style="width:90px;"></div>
                         </div>
