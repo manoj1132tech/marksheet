@@ -161,12 +161,18 @@
     };
 
     function filterStudents() {
-        const cls = document.getElementById('tClass').value;
-        const sel = document.getElementById('tStudent');
-        sel.innerHTML = '<option value="">-- Choose Student --</option>';
-        MASTER.forEach((r, i) => { if(i>0 && r[3] == cls) sel.add(new Option(r[0], i)); });
-        document.getElementById('studentStep').style.display='block';
-    }
+    const cls = document.getElementById('tClass').value.trim().toUpperCase();
+    const sel = document.getElementById('tStudent');
+    sel.innerHTML = '<option value="">-- Choose Student --</option>';
+    
+    MASTER.forEach((r, i) => { 
+        // r[3] class ka column hai, hum dono taraf se space hatakar aur capital karke match karenge
+        if(i > 0 && r[3] && r[3].toString().trim().toUpperCase() === cls) { 
+            sel.add(new Option(r[0], i)); 
+        } 
+    });
+    document.getElementById('studentStep').style.display = 'block';
+}
 
     function loadStudent() {
         const i = document.getElementById('tStudent').value;
