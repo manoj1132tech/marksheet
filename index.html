@@ -69,7 +69,6 @@
 
         .m-marks-table { width: 100%; border-collapse: collapse; border: 2px solid #000; position: relative; z-index: 2; background: transparent !important;}
         
-        /* Updated Header Gradient and Color */
         .m-marks-table th { 
             background: linear-gradient(180deg, #d32f2f 0%, #8b0000 100%) !important; 
             color: white !important; 
@@ -127,10 +126,10 @@
         <div id="marksArea" style="display:none;">
             <p id="phyNote" style="color:red; font-weight:bold; display:none;">Note: Physical Education mein sirf Half Yearly aur Annual Marks bharein.</p>
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; background:#fff; padding:15px; border-radius:8px; border:1px solid #ddd;">
-                <div>FA I+II (30): <input type="number" id="m1" placeholder="0"></div>
-                <div>Half Yearly (70): <input type="number" id="m2" placeholder="0"></div>
-                <div>FA III+IV (30): <input type="number" id="m3" placeholder="0"></div>
-                <div>Annual (70): <input type="number" id="m4" placeholder="0"></div>
+                <div>FA I+II (30): <input type="number" id="m1" placeholder="0" min="0" max="30"></div>
+                <div>Half Yearly (70): <input type="number" id="m2" placeholder="0" min="0" max="70"></div>
+                <div>FA III+IV (30): <input type="number" id="m3" placeholder="0" min="0" max="30"></div>
+                <div>Annual (70): <input type="number" id="m4" placeholder="0" min="0" max="70"></div>
             </div>
             <button class="btn-action" onclick="saveData()">Update Marks</button>
         </div>
@@ -212,12 +211,18 @@
     async function saveData() {
         const i = document.getElementById('tStudent').value;
         const sub = document.getElementById('tSubject').value;
-        const vals = [
-            Number(document.getElementById('m1').value) || 0, 
-            Number(document.getElementById('m2').value) || 0, 
-            Number(document.getElementById('m3').value) || 0, 
-            Number(document.getElementById('m4').value) || 0
-        ];
+        const m1 = Number(document.getElementById('m1').value) || 0;
+        const m2 = Number(document.getElementById('m2').value) || 0;
+        const m3 = Number(document.getElementById('m3').value) || 0;
+        const m4 = Number(document.getElementById('m4').value) || 0;
+
+        // Validation Check
+        if(m1 > 30 || m3 > 30 || m2 > 70 || m4 > 70) {
+            alert("Galti: FA marks 30 se upar aur Exam marks 70 se upar nahi ho sakte!");
+            return;
+        }
+
+        const vals = [m1, m2, m3, m4];
         
         await fetch(API, { 
             method:"POST", 
@@ -316,22 +321,4 @@
                     </div>
                     <div style="margin-top:15px; font-weight:bold; font-size:18px; position:relative; z-index:2;">
                         <span>Remarks: <span style="color:green;">${perc > 75 ? 'Excellent Performance' : (isPass ? 'Good, Keep it up' : 'Hard work required')}</span></span><br><br>
-                        <span>Promotion: ${isPass ? 'Promoted to next class' : 'Detained in same class'}</span>
-                    </div>
-                    <div class="m-sig-row">
-                        <div class="m-sig-box">Guardian Sign</div><div class="m-sig-box">Class Teacher</div><div class="m-sig-box">Principal</div>
-                    </div>
-                    <div style="text-align:center; font-size:26px; margin-top:5px; letter-spacing:5px;">
-                        <span style="color:#b8860b;">❦</span> <span style="color:#d32f2f;">❀</span> <span style="color:#b8860b;">❦</span> <span style="color:#d32f2f;">❀</span> <span style="color:#b8860b;">❦</span>
-                    </div>
-                </div>`;
-            }
-        });
-        const w = window.open('', '_blank');
-        w.document.write(`<html><head><style>${document.head.innerHTML}</style></head><body>${html}</body></html>`);
-        w.document.close();
-        setTimeout(() => w.print(), 1000);
-    }
-</script>
-</body>
-</html>
+                        <span>Promotion: ${isPass ?
