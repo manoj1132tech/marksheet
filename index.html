@@ -37,7 +37,6 @@
             -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important;
         }
 
-        /* WATERMARK LOGO: BIGGER AND LOWERED */
         .marksheet-page::before {
             content: ""; position: absolute; 
             top: 57%; left: 50%; transform: translate(-50%, -50%);
@@ -68,14 +67,10 @@
         .m-val-red { font-weight: bold; color: #d32f2f; padding: 0 5px; }
 
         .m-marks-table { width: 100%; border-collapse: collapse; border: 2px solid #000; position: relative; z-index: 2; background: transparent !important;}
-        
         .m-marks-table th { 
             background: linear-gradient(180deg, #d32f2f 0%, #8b0000 100%) !important; 
-            color: white !important; 
-            padding: 6px; 
-            border: 1px solid #000; 
+            color: white !important; padding: 6px; border: 1px solid #000; 
         }
-
         .m-marks-table td { border: 1px solid #000; padding: 6px 4px; text-align: center; font-weight: bold; font-size: 15px; }
 
         .subject-name { text-align: left !important; padding-left: 15px !important; color: #1a237e !important; background: rgba(227, 242, 253, 0.4) !important; }
@@ -153,7 +148,12 @@
     const ADMIN_PASS = "KRR@2026";
     let MASTER = [];
 
-    async function sync() { const res = await fetch(API); MASTER = await res.json(); }
+    async function sync() { 
+        try {
+            const res = await fetch(API); 
+            MASTER = await res.json(); 
+        } catch(e) { console.error("Sync Error: Check API URL and Deployment"); }
+    }
     sync();
 
     function showTab(id) {
@@ -168,17 +168,16 @@
     };
 
     function filterStudents() {
-    const cls = document.getElementById('tClass').value.trim().toUpperCase();
-    const sel = document.getElementById('tStudent');
-    sel.innerHTML = '<option value="">-- Choose Student --</option>';
-    
-    MASTER.forEach((r, i) => { 
-        if(i > 0 && r[3] && r[3].toString().trim().toUpperCase() === cls) { 
-            sel.add(new Option(r[0], i)); 
-        } 
-    });
-    document.getElementById('studentStep').style.display = 'block';
-}
+        const cls = document.getElementById('tClass').value.trim().toUpperCase();
+        const sel = document.getElementById('tStudent');
+        sel.innerHTML = '<option value="">-- Choose Student --</option>';
+        MASTER.forEach((r, i) => { 
+            if(i > 0 && r[3] && r[3].toString().trim().toUpperCase() === cls) { 
+                sel.add(new Option(r[0], i)); 
+            } 
+        });
+        document.getElementById('studentStep').style.display = 'block';
+    }
 
     function loadStudent() {
         const i = document.getElementById('tStudent').value;
@@ -193,37 +192,32 @@
         const sub = document.getElementById('tSubject').value;
         const i = document.getElementById('tStudent').value;
         if(!sub || !i) return;
-        
         document.getElementById('phyNote').style.display = (sub === 'physical') ? 'block' : 'none';
-        
         const cols = colMap[sub];
         document.getElementById('m1').value = MASTER[i][cols[0]] || 0;
         document.getElementById('m2').value = MASTER[i][cols[1]] || 0;
         document.getElementById('m3').value = MASTER[i][cols[2]] || 0;
         document.getElementById('m4').value = MASTER[i][cols[3]] || 0;
-        
         document.getElementById('m1').disabled = (sub === 'physical');
         document.getElementById('m3').disabled = (sub === 'physical');
-        
         document.getElementById('marksArea').style.display='block';
     }
 
     async function saveData() {
         const i = document.getElementById('tStudent').value;
         const sub = document.getElementById('tSubject').value;
-        const m1 = Number(document.getElementById('m1').value) || 0;
-        const m2 = Number(document.getElementById('m2').value) || 0;
-        const m3 = Number(document.getElementById('m3').value) || 0;
-        const m4 = Number(document.getElementById('m4').value) || 0;
+        const v1 = Number(document.getElementById('m1').value) || 0;
+        const v2 = Number(document.getElementById('m2').value) || 0;
+        const v3 = Number(document.getElementById('m3').value) || 0;
+        const v4 = Number(document.getElementById('m4').value) || 0;
 
-        // Validation Check
-        if(m1 > 30 || m3 > 30 || m2 > 70 || m4 > 70) {
-            alert("Galti: FA marks 30 se upar aur Exam marks 70 se upar nahi ho sakte!");
+        // Restriction Check
+        if(v1 > 30 || v3 > 30 || v2 > 70 || v4 > 70) {
+            alert("Limit check karein: FA(30) aur Exam(70)");
             return;
         }
 
-        const vals = [m1, m2, m3, m4];
-        
+        const vals = [v1, v2, v3, v4];
         await fetch(API, { 
             method:"POST", 
             body: JSON.stringify({action:"updateMarks", rowIndex: parseInt(i), colIndexes: colMap[sub], newValues: vals}) 
@@ -273,7 +267,6 @@
                     const c = colMap[s];
                     const t = (parseInt(r[c[0]])||0)+(parseInt(r[c[1]])||0)+(parseInt(r[c[2]])||0)+(parseInt(r[c[3]])||0);
                     let sName = s === 'social' ? 'SOCIAL SCIENCE' : s === 'physical' ? 'PHY. HEALTH EDU.' : s.toUpperCase();
-                    
                     if(s === 'physical') {
                         let gHalf = getPhyGrade(r[c[1]]);
                         let gAnnual = getPhyGrade(r[c[3]]);
@@ -283,10 +276,8 @@
                         rows += `<tr><td class="subject-name">${sName}</td><td>${r[c[0]]||0}</td><td>${r[c[1]]||0}</td><td>${r[c[2]]||0}</td><td>${r[c[3]]||0}</td><td class="total-col">${t}</td><td class="grade-col">${getGrade(t)}</td></tr>`;
                     }
                 });
-
                 const perc = (gt / 14).toFixed(2);
                 const isPass = perc >= 33;
-
                 html += `
                 <div class="marksheet-page">
                     <div class="m-header">
@@ -321,4 +312,19 @@
                     </div>
                     <div style="margin-top:15px; font-weight:bold; font-size:18px; position:relative; z-index:2;">
                         <span>Remarks: <span style="color:green;">${perc > 75 ? 'Excellent Performance' : (isPass ? 'Good, Keep it up' : 'Hard work required')}</span></span><br><br>
-                        <span>Promotion: ${isPass ?
+                        <span>Promotion: ${isPass ? 'Promoted to next class' : 'Detained in same class'}</span>
+                    </div>
+                    <div class="m-sig-row">
+                        <div class="m-sig-box">Guardian Sign</div><div class="m-sig-box">Class Teacher</div><div class="m-sig-box">Principal</div>
+                    </div>
+                </div>`;
+            }
+        });
+        const w = window.open('', '_blank');
+        w.document.write(`<html><head><style>${document.head.innerHTML}</style></head><body>${html}</body></html>`);
+        w.document.close();
+        setTimeout(() => w.print(), 1000);
+    }
+</script>
+</body>
+</html>
