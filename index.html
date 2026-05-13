@@ -225,7 +225,9 @@
         const i = document.getElementById('tStudent').value;
         if(!i) return;
         const s = MASTER[i];
-        document.getElementById('studentInfoBox').innerHTML = `<b>Roll:</b> ${s[4]} | <b>Father:</b> Mr. ${s[2]}`;
+        // Formatting Roll No for Teacher View
+        const formattedRoll = s[4] < 10 ? `0${s[4]}` : s[4];
+        document.getElementById('studentInfoBox').innerHTML = `<b>Roll:</b> ${formattedRoll} | <b>Father:</b> Mr. ${s[2]}`;
         document.getElementById('studentInfoBox').style.display='block';
         document.getElementById('subjectStep').style.display='block';
     }
@@ -320,6 +322,10 @@
                 });
                 const perc = (gt / 14).toFixed(2);
                 const isPass = perc >= 33;
+                
+                // Formatting Roll No for Marksheet
+                const formattedRoll = r[4] < 10 ? `0${r[4]}` : r[4];
+
                 html += `
                 <div class="marksheet-page">
                     <div class="m-header">
@@ -335,7 +341,7 @@
                     </div>
                     <div class="m-banner">PROGRESS REPORT</div>
                     <table class="m-info-table">
-                        <tr><td width="60%"><span class="m-label">Student Name :</span> <span class="m-val-red">${r[0]}</span></td><td><span class="m-label">Roll No :</span> <span class="m-val-red">${r[4]}</span></td></tr>
+                        <tr><td width="60%"><span class="m-label">Student Name :</span> <span class="m-val-red">${r[0]}</span></td><td><span class="m-label">Roll No :</span> <span class="m-val-red">${formattedRoll}</span></td></tr>
                         <tr><td><span class="m-label">Father Name :</span> <span class="m-val-red">Mr. ${r[2]}</span></td><td><span class="m-label">Class :</span> <span class="m-val-red">${r[3]}</span></td></tr>
                         <tr><td><span class="m-label">Mother Name :</span> <span class="m-val-red">Mrs. ${r[1]}</span></td><td><span class="m-label">Date of Birth :</span> <span class="m-val-red">${formatDOB(r[5])}</span></td></tr>
                         <tr><td colspan="2"><span class="m-label">PEN NO :</span> <span class="m-val-red">${r[6] || '---'}</span></td></tr>
